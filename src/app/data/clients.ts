@@ -1,4 +1,4 @@
-export const clients = [{
+export const CLIENTS = [{
   "id": 78,
   "city": null,
   "state": null,

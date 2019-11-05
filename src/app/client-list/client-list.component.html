@@ -1,7 +1,10 @@
-<div *ngFor="let client of clients">
+<div style="float: left">
   <ul class="client-list">
-    <li>
+    <li *ngFor="let client of clients" [class.selected]="client === selectedClient" (click)=onSelect(client)>
       <span class="badge">{{client.id}}</span> {{client.firstname}}
     </li>
   </ul>
+</div>
+<div>
+  <app-client-detail [client]="selectedClient"></app-client-detail>
 </div>

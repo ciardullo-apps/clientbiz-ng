@@ -1,0 +1,46 @@
+Details
+<div *ngIf="client">
+  <div class="">
+    <label>id: </label>{{client.id}}
+  </div>
+  <div class="">
+    <label>First Name:
+      <input [(ngModel)]="client.firstname" placeholder="First name"/>
+    </label>
+  </div>
+  <div class="">
+    <label>Last Name:
+      <input [(ngModel)]="client.lastname" placeholder="Last name"/>
+    </label>
+  </div>
+  <div class="">
+    <label>Contact Name:
+      <input [(ngModel)]="client.contactname" placeholder="Contact name"/>
+    </label>
+  </div>
+  <div class="">
+    <label>Timezone:
+      <input [(ngModel)]="client.timezone" placeholder="Timezone"/>
+    </label>
+  </div>
+  <div class="">
+    <label>Solicited:
+      <input type="checkbox" [checked]="client.solicited"/>
+    </label>
+  </div>
+  <div class="">
+    <label>Number of appointments:
+      <input [(ngModel)]="client.numappts" placeholder="Number of appointments"/>
+    </label>
+  </div>
+  <div class="">
+    <label>Revenue:
+      <input [(ngModel)]="client.revenue" placeholder="Revenue"/>
+    </label>
+  </div>
+  <div class="">
+    <label>Last appointment:
+      <input [(ngModel)]="client.lastapptdate" placeholder="Last appointment"/>
+    </label>
+  </div>
+</div>
