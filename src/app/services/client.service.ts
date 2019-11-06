@@ -16,4 +16,8 @@ export class ClientService {
     return this.http.get<Client[]>(`${environment.apiAddress}/client`);
     // return of(CLIENTS);
   }
+
+  getClient(id: number): Observable<Client> {
+    return this.http.get<Client>(`${environment.apiAddress}/client/${id}`);
+  }
 }

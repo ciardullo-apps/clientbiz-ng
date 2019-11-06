@@ -2,3 +2,11 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: 'Roboto', sans-serif; }
+.client-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 20%;
+}
+.client-full-width {
+  width: 100%;
+}

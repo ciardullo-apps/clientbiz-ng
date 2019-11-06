@@ -1,46 +1,34 @@
-Details
-<div *ngIf="client">
-  <div class="">
-    <label>id: </label>{{client.id}}
+<form class="client-form">
+  <div *ngIf="client" style="padding: 10px">
+    <mat-form-field class="client-full-width">
+      <input matInput placeholder="ID" value="{{client.clientId}}" />
+    </mat-form-field>
+    <mat-form-field class="client-full-width">
+        <input matInput placeholder="First name" value="{{client.firstname}}" />
+    </mat-form-field>
+    <mat-form-field class="client-full-width">
+        <input matInput placeholder="Last name" value="{{client.lastname}}" />
+    </mat-form-field>
+    <mat-form-field class="client-full-width">
+        <input matInput placeholder="Contact name" value="{{client.contactname}}" />
+    </mat-form-field>
+    <mat-form-field class="client-full-width">
+        <input matInput placeholder="City" value="{{client.city}}" />
+    </mat-form-field>
+    <mat-form-field class="client-full-width">
+        <input matInput placeholder="State" value="{{client.state}}" />
+    </mat-form-field>
+    <mat-form-field class="client-full-width">
+        <input matInput placeholder="Timezone" value="{{client.timezone}}" />
+    </mat-form-field>
+    <mat-checkbox class="client-full-width" [checked]="client.solicited===1" labelPosition="before">
+      <mat-label>Solicited</mat-label>
+    </mat-checkbox>
+    <mat-form-field *ngIf="client.solicited===1" class="client-full-width">
+        <input matInput type="datetime-local" value="{{client.firstcontact}}" placeholder="First contacted" />
+    </mat-form-field>
+    <mat-form-field class="client-full-width">
+        <input matInput type="datetime-local" value="{{client.firstresponse}}" placeholder="First responded" />
+    </mat-form-field>
   </div>
-  <div class="">
-    <label>First Name:
-      <input [(ngModel)]="client.firstname" placeholder="First name"/>
-    </label>
-  </div>
-  <div class="">
-    <label>Last Name:
-      <input [(ngModel)]="client.lastname" placeholder="Last name"/>
-    </label>
-  </div>
-  <div class="">
-    <label>Contact Name:
-      <input [(ngModel)]="client.contactname" placeholder="Contact name"/>
-    </label>
-  </div>
-  <div class="">
-    <label>Timezone:
-      <input [(ngModel)]="client.timezone" placeholder="Timezone"/>
-    </label>
-  </div>
-  <div class="">
-    <label>Solicited:
-      <input type="checkbox" [checked]="client.solicited"/>
-    </label>
-  </div>
-  <div class="">
-    <label>Number of appointments:
-      <input [(ngModel)]="client.numappts" placeholder="Number of appointments"/>
-    </label>
-  </div>
-  <div class="">
-    <label>Revenue:
-      <input [(ngModel)]="client.revenue" placeholder="Revenue"/>
-    </label>
-  </div>
-  <div class="">
-    <label>Last appointment:
-      <input [(ngModel)]="client.lastapptdate" placeholder="Last appointment"/>
-    </label>
-  </div>
-</div>
+</form>

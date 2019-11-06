@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule }    from '@angular/common/http';
 import { MatInputModule, MatTableModule, MatToolbarModule } from '@angular/material';
@@ -12,6 +11,7 @@ import { AppComponent } from './app.component';
 import { ClientListComponent } from './client-list/client-list.component';
 import { ClientDetailComponent } from './client-detail/client-detail.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -29,10 +29,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatTableModule,
     MatCheckboxModule,
     MatSortModule,
-    BrowserAnimationsModule
-    // RouterModule.forRoot([
-    //   { path: '', component: ClientListComponent },
-    // ])
+    BrowserAnimationsModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

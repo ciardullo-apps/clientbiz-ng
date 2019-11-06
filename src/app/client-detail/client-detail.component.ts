@@ -1,5 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 import { Client } from '../model/client';
+import { ClientService } from '../services/client.service'
 
 @Component({
   selector: 'app-client-detail',
@@ -9,10 +12,23 @@ import { Client } from '../model/client';
 export class ClientDetailComponent implements OnInit {
   @Input() client: Client
 
-  constructor() {
-  }
+  constructor(
+    private route: ActivatedRoute,
+    private clientService: ClientService,
+    private location: Location
+  ) { }
 
   ngOnInit() {
+    this.getClient();
+  }
+
+  getClient(): void {
+    // Javascript plus sign converts string to number
+    const id = +this.route.snapshot.paramMap.get('id');
+    this.clientService.getClient(id)
+      .subscribe(client =>
+        this.client = client;
+      );
   }
 
 }

@@ -11,7 +11,6 @@ import { Client } from '../model/client'
 })
 export class ClientListComponent implements OnInit {
 
-  selectedClient: Client;
   clients: Client[];
 
   displayedColumns = ['id', 'firstname', 'lastname', 'contactname', 'timezone', 'solicited', 'numappts', 'revenue', 'lastapptdate'];
@@ -23,10 +22,6 @@ export class ClientListComponent implements OnInit {
 
   ngOnInit() {
     this.getClients();
-  }
-
-  onSelect(client: Client): void {
-    this.selectedClient = client;
   }
 
   getClients(): void {
