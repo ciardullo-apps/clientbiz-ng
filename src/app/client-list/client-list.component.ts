@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatTableDataSource } from '@angular/material';
+import { MatSort } from '@angular/material/sort';
 import { ClientService } from '../services/client.service'
 import { Client } from '../model/client'
 
@@ -12,6 +14,11 @@ export class ClientListComponent implements OnInit {
   selectedClient: Client;
   clients: Client[];
 
+  displayedColumns = ['id', 'firstname', 'lastname', 'contactname', 'timezone', 'solicited', 'numappts', 'revenue', 'lastapptdate'];
+  dataSource;
+
+  @ViewChild(MatSort) sort: MatSort;
+
   constructor(private clientService: ClientService) { }
 
   ngOnInit() {
@@ -24,6 +31,26 @@ export class ClientListComponent implements OnInit {
 
   getClients(): void {
     this.clientService.getClients()
-      .subscribe(clients => this.clients = clients);
+      .subscribe(clients => {
+        this.clients = clients;
+        this.dataSource = new MatTableDataSource<Client>(clients);
+        this.dataSource.sort = this.sort;
+      });
+  }
+
+  getTotalAppts() {
+    let totalAppts = 0;
+    if(this.clients) {
+     totalAppts = this.clients.map(t => t.numappts).reduce((acc, value) => acc + value, 0);
+    }
+    return totalAppts;
+  }
+
+  getTotalRevenue() {
+    let totalRevenue = 0.0;
+    if(this.clients) {
+     totalRevenue = this.clients.map(t => t.revenue).reduce((acc, value) => acc + value, 0);
+    }
+    return totalRevenue;
   }
 }
