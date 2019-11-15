@@ -5,13 +5,17 @@
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
   <meta charset="utf-8">
   <title>ClientbizNg</title>
-  <base href="/">
+  <!-- IMPORTANT!!!
+    Must be './' in order to work with both nginx and native Angular 2 on port 4200
+    '/' alone works only with native Angular 2 on port 4200
+    '/clientbiz-ng/' works only with nginx
+  -->
+  <base href="./">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
-  <h1>Hi There Again, John</h1>
   <app-root></app-root>
 </body>
 </html>
