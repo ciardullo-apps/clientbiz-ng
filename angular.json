@@ -54,6 +54,7 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "host": "myhost",
+            "port": 4200,
             "browserTarget": "clientbiz-ng:build",
             "sslKey": "server.key",
             "sslCert": "server.crt",
