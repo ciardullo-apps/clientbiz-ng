@@ -1,4 +1,10 @@
-<nav>
-  <a routerLink="/clients">Clients</a>
-</nav>
-<router-outlet></router-outlet>
+<mat-sidenav-container>
+  <mat-sidenav mode="side" opened>
+    <nav>
+      <a routerLink="/clients">Clients</a>
+    </nav>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

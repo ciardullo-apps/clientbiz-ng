@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule }    from '@angular/common/http';
-import { MatInputModule, MatTableModule, MatToolbarModule } from '@angular/material';
+import { MatInputModule, MatTableModule, MatToolbarModule, MatSidenavModule } from '@angular/material';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSortModule } from '@angular/material/sort';
 
@@ -29,6 +29,7 @@ import { AppRoutingModule } from './app-routing.module';
     MatTableModule,
     MatCheckboxModule,
     MatSortModule,
+    MatSidenavModule,
     BrowserAnimationsModule,
     AppRoutingModule
   ],
