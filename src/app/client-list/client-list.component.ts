@@ -12,7 +12,6 @@ import { Client } from '../model/client'
 export class ClientListComponent implements OnInit {
 
   clients: Client[];
-
   displayedColumns = ['id', 'firstname', 'lastname', 'contactname', 'timezone', 'solicited', 'numappts', 'revenue', 'lastapptdate'];
   dataSource;
 

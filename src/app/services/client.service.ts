@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { environment } from '../../environments/environment'
 import { Client } from '../model/client';
+import { Appointment } from '../model/appointment';
 
 @Injectable({
   providedIn: 'root'
@@ -19,5 +20,9 @@ export class ClientService {
 
   getClient(id: number): Observable<Client> {
     return this.http.get<Client>(`${environment.apiAddress}/client/${id}`);
+  }
+
+  getAppointments(id: number): Observable<Appointment[]> {
+    return this.http.get<Appointment[]>(`${environment.apiAddress}/appointments/${id}`);
   }
 }

@@ -10,7 +10,7 @@ import { ClientService } from '../services/client.service'
   styleUrls: ['./client-detail.component.css']
 })
 export class ClientDetailComponent implements OnInit {
-  @Input() client: Client
+  @Input() client: Client;
 
   constructor(
     private route: ActivatedRoute,

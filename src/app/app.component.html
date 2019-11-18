@@ -1,7 +1,7 @@
 <mat-sidenav-container>
-  <mat-sidenav mode="side" opened>
+  <mat-sidenav mode="side" [fixedInViewport]="true" opened>
     <nav>
-      <a routerLink="/clients">Clients</a>
+      <a [routerLink]="['/clients']">Clients</a>
     </nav>
   </mat-sidenav>
   <mat-sidenav-content>

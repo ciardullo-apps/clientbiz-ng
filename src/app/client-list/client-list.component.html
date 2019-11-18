@@ -42,7 +42,12 @@
 
     <ng-container matColumnDef="numappts">
       <mat-header-cell *matHeaderCellDef mat-sort-header># Appointments</mat-header-cell>
-      <mat-cell *matCellDef="let client">{{ client.numappts }}</mat-cell>
+      <mat-cell *matCellDef="let client">
+        <a
+          [routerLink]="['/appointments', client.id]">
+          {{ client.numappts }}
+        </a>
+      </mat-cell>
       <mat-footer-cell *matFooterCellDef>{{ getTotalAppts() | number }}</mat-footer-cell>
     </ng-container>
 

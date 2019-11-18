@@ -12,12 +12,14 @@ import { ClientListComponent } from './client-list/client-list.component';
 import { ClientDetailComponent } from './client-detail/client-detail.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
+import { AppointmentsComponent } from './appointments/appointments.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ClientListComponent,
-    ClientDetailComponent
+    ClientDetailComponent,
+    AppointmentsComponent
   ],
   imports: [
     BrowserModule,

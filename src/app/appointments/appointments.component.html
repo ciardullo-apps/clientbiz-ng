@@ -1,0 +1,48 @@
+<mat-table [dataSource]="dataSource" matSort>
+  <ng-container matColumnDef="id">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+    <mat-cell *matCellDef="let appointment">{{ appointment.id }}</mat-cell>
+    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="topic_name">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Topic</mat-header-cell>
+    <mat-cell *matCellDef="let appointment">{{ appointment.topic_name }}</mat-cell>
+    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="starttime">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Start time</mat-header-cell>
+    <mat-cell *matCellDef="let appointment">{{ appointment.starttime | date: 'short' }}</mat-cell>
+    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="duration">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Duration</mat-header-cell>
+    <mat-cell *matCellDef="let appointment">{{ appointment.duration | number }}</mat-cell>
+    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="rate">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Hourly Rate</mat-header-cell>
+    <mat-cell *matCellDef="let appointment">{{ appointment.rate | number }}</mat-cell>
+    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="billingpct">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Billing %</mat-header-cell>
+    <mat-cell *matCellDef="let appointment">{{ appointment.billingpct | number: '1.2-2' }}</mat-cell>
+    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="paid">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Date Paid</mat-header-cell>
+    <mat-cell *matCellDef="let appointment">{{ appointment.paid | date: 'shortDate' }}</mat-cell>
+    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  <mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></mat-footer-row>
+
+</mat-table>
