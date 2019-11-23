@@ -16,7 +16,7 @@ export class AppointmentsComponent implements OnInit {
   displayedColumns = ['id', 'topic_name', 'starttime', 'duration', 'rate', 'billingpct', 'paid'];
   dataSource;
 
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(
     private clientService: ClientService,

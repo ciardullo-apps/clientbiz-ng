@@ -15,7 +15,7 @@ export class ClientListComponent implements OnInit {
   displayedColumns = ['id', 'firstname', 'lastname', 'contactname', 'timezone', 'solicited', 'numappts', 'revenue', 'lastapptdate'];
   dataSource;
 
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(private clientService: ClientService) { }
 
