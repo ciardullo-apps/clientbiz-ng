@@ -1,0 +1,18 @@
+<mat-toolbar color="primary">
+  <span>Clientbiz Angular</span>
+  <span class="example-fill-remaining-space"></span>
+  <button mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button id="googleBtn" *ngIf="!authService.isLoggedIn()" mat-menu-item (click)="authService.googleLogin()">
+      <mat-icon>portrait</mat-icon>Login with Google
+    </button>
+    <button *ngIf="authService.isLoggedIn()" mat-menu-item>
+      <mat-icon>portrait</mat-icon>User Profile
+    </button>
+    <button *ngIf="authService.isLoggedIn()" mat-menu-item (click)="authService.logout()">
+      <mat-icon>logout</mat-icon>Logout
+    </button>
+  </mat-menu>
+</mat-toolbar>
