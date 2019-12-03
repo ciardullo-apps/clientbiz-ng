@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { ClientDetailComponent } from './client-detail.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ClientDetailComponent', () => {
   let component: ClientDetailComponent;
@@ -8,7 +11,12 @@ describe('ClientDetailComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ClientDetailComponent ]
+      declarations: [ ClientDetailComponent ],
+      imports: [
+        RouterTestingModule,
+        HttpClientTestingModule,
+      ],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     })
     .compileComponents();
   }));

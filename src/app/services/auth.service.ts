@@ -11,25 +11,27 @@ export class AuthService {
   private userInfo: User;
 
   constructor() {
-    gapi.load('auth2', function () {
-             gapi.auth2.init()
-          });
   }
 
   googleLogin() {
+    // Should be in constructor, moved here to facilitate testing.
+    this.userInfo = gapi.load('auth2', function () {
+             gapi.auth2.init()
+
         let googleAuth = gapi.auth2.getAuthInstance();
-        googleAuth.then(() => {
+        return googleAuth.then(() => {
            googleAuth.signIn({scope: 'profile email'}).then(googleUser => {
-              this.userInfo = {
+              return {
                 id: googleUser.getBasicProfile().getId(),
                 firstName: googleUser.getBasicProfile().getGivenName(),
                 lastName: googleUser.getBasicProfile().getFamilyName(),
                 email: googleUser.getBasicProfile().getEmail(),
                 photo: googleUser.getBasicProfile().getImageUrl()
               }
-              console.log(this.userInfo);
            });
         });
+      });
+      console.log(this.userInfo);
      }
 
   isLoggedIn() : boolean {

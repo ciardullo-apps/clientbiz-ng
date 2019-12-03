@@ -43,10 +43,6 @@ import { NavbarComponent } from './navbar/navbar.component';
     BrowserAnimationsModule,
     AppRoutingModule
   ],
-  exports: [
-    MatFormFieldModule,
-    MatIconModule,
-  ],
   providers: [],
   bootstrap: [AppComponent]
 })
