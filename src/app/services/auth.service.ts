@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { User } from '../model/user';
+import { Observable, of } from 'rxjs';
+
 
 declare const gapi: any;
 
@@ -13,26 +15,35 @@ export class AuthService {
   constructor() {
   }
 
-  googleLogin() {
-    // Should be in constructor, moved here to facilitate testing.
+  loginWithGoogle() {
+    this.googleLogin().subscribe((userInfo : User) => {
+      this.userInfo = userInfo;
+      console.log(this.userInfo);
+    });
+  }
+
+  private googleLogin () {
+    return new Observable((observer) => {
     this.userInfo = gapi.load('auth2', function () {
              gapi.auth2.init()
 
         let googleAuth = gapi.auth2.getAuthInstance();
-        return googleAuth.then(() => {
+        googleAuth.then(() => {
            googleAuth.signIn({scope: 'profile email'}).then(googleUser => {
-              return {
+              observer.next({
                 id: googleUser.getBasicProfile().getId(),
                 firstName: googleUser.getBasicProfile().getGivenName(),
                 lastName: googleUser.getBasicProfile().getFamilyName(),
                 email: googleUser.getBasicProfile().getEmail(),
                 photo: googleUser.getBasicProfile().getImageUrl()
-              }
+              });
+              observer.complete();
            });
         });
       });
-      console.log(this.userInfo);
-     }
+      return {unsubscribe() {}};
+    });
+  }
 
   isLoggedIn() : boolean {
     return !!this.userInfo;
@@ -40,5 +51,9 @@ export class AuthService {
 
   logout() : void {
     this.userInfo = undefined;
+  }
+
+  getUserInfo() : User {
+    return this.userInfo;
   }
 }

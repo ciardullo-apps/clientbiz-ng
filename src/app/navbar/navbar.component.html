@@ -5,7 +5,7 @@
     <mat-icon>menu</mat-icon>
   </button>
   <mat-menu #menu="matMenu">
-    <button id="googleBtn" *ngIf="!isLoggedIn()" mat-menu-item (click)="googleLogin()">
+    <button id="googleBtn" *ngIf="!isLoggedIn()" mat-menu-item (click)="loginWithGoogle()">
       <mat-icon>portrait</mat-icon>Login with Google
     </button>
     <button *ngIf="isLoggedIn()" mat-menu-item>

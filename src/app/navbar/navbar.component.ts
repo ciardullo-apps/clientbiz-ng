@@ -19,8 +19,8 @@ export class NavbarComponent implements OnInit {
     return this.authService.isLoggedIn();
   }
 
-  googleLogin() : void {
-    this.authService.googleLogin();
+  loginWithGoogle() : void {
+    this.authService.loginWithGoogle();
   }
 
   logout() : void {
