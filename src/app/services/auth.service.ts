@@ -110,7 +110,7 @@ export class AuthService {
     }
 
     if(this.getToken()) {
-      headersConfig['Authorization'] = `Token ${this.getToken()}`;
+      headersConfig['Authorization'] = `Bearer ${this.getToken()}`;
     }
 
     return new HttpHeaders(headersConfig);
