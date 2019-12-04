@@ -5,6 +5,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterModule } from '@angular/router';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('NavbarComponent', () => {
   let component: NavbarComponent;
@@ -17,6 +18,7 @@ describe('NavbarComponent', () => {
         MatMenuModule,
         MatIconModule,
         RouterModule,
+        HttpClientTestingModule,
       ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     })

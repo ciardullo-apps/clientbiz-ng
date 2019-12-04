@@ -8,7 +8,7 @@
     <button id="googleBtn" *ngIf="!isLoggedIn()" mat-menu-item (click)="loginWithGoogle()">
       <mat-icon>portrait</mat-icon>Login with Google
     </button>
-    <button *ngIf="isLoggedIn()" mat-menu-item>
+    <button *ngIf="isLoggedIn()" (click)="getUserProfile()" mat-menu-item>
       <mat-icon>portrait</mat-icon>User Profile
     </button>
     <button *ngIf="isLoggedIn()" mat-menu-item (click)="logout()">
