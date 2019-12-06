@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule }    from '@angular/common/http';
-import { MatInputModule, MatTableModule, MatToolbarModule } from '@angular/material';
+import { MatInputModule, MatTableModule, MatToolbarModule, MatDialogModule } from '@angular/material';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,7 +16,7 @@ import { ClientDetailComponent } from './client-detail/client-detail.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppointmentsComponent } from './appointments/appointments.component';
-import { NavbarComponent } from './navbar/navbar.component';
+import { NavbarComponent, ProfileDialog } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +24,8 @@ import { NavbarComponent } from './navbar/navbar.component';
     ClientListComponent,
     ClientDetailComponent,
     AppointmentsComponent,
-    NavbarComponent
+    NavbarComponent,
+    ProfileDialog
   ],
   imports: [
     BrowserModule,
@@ -40,10 +41,12 @@ import { NavbarComponent } from './navbar/navbar.component';
     MatMenuModule,
     MatIconModule,
     MatFormFieldModule,
+    MatDialogModule,
     BrowserAnimationsModule,
     AppRoutingModule
   ],
   providers: [],
+  entryComponents: [ProfileDialog],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
