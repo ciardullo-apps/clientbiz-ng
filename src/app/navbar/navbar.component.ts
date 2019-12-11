@@ -12,7 +12,7 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private dialog: MatDialog,
+    public dialog: MatDialog,
   ) {}
 
   ngOnInit() {
@@ -35,7 +35,7 @@ export class NavbarComponent implements OnInit {
   }
 
   openUserProfile() {
-    const dialogRef = this.dialog.open(ProfileDialog, {
+    const dialogRef = this.dialog.open(ProfileDialogComponent, {
       width: '300px',
       data: this.authService.getUserInfo()
     });
@@ -50,10 +50,11 @@ export class NavbarComponent implements OnInit {
   templateUrl: './profile-dialog.html',
   styleUrls: ['./navbar.component.css']
 })
-export class ProfileDialog {
+export class ProfileDialogComponent {
   constructor(
-    public dialogRef: MatDialogRef<ProfileDialog>,
-    @Inject(MAT_DIALOG_DATA) public userInfo: User) {}
+    public dialogRef: MatDialogRef<ProfileDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public userInfo: User) {
+    }
 
   onNoClick(): void {
     this.dialogRef.close();

@@ -16,7 +16,7 @@ import { ClientDetailComponent } from './client-detail/client-detail.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppointmentsComponent } from './appointments/appointments.component';
-import { NavbarComponent, ProfileDialog } from './navbar/navbar.component';
+import { NavbarComponent, ProfileDialogComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +25,7 @@ import { NavbarComponent, ProfileDialog } from './navbar/navbar.component';
     ClientDetailComponent,
     AppointmentsComponent,
     NavbarComponent,
-    ProfileDialog
+    ProfileDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +46,9 @@ import { NavbarComponent, ProfileDialog } from './navbar/navbar.component';
     AppRoutingModule
   ],
   providers: [],
-  entryComponents: [ProfileDialog],
+  entryComponents: [
+    ProfileDialogComponent,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
