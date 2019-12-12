@@ -66,7 +66,7 @@ describe('ClientService', () => {
         // Call the service
         service.getAppointments(clientId).subscribe(data => {
           expect(data.length).toBe(2);
-          expect(data.reduce((sum, appointment) => sum + appointment.duration, 0)).toBe(150)
+          expect(data.map(a => a.duration).reduce((sum, duration) => sum + duration)).toBe(150)
         });
 
         // Set expectations for the HttpClient mock
