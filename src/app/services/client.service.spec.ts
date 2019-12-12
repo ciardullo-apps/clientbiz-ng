@@ -3,8 +3,8 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 
 import { ClientService } from './client.service';
 import { environment } from 'src/environments/environment';
-import { clientTestData } from '../model/test-data/client-test-data';
-import { appointmentTestData } from '../model/test-data/appointment-test-data';
+import { clientTestData } from '../test/mock-data/client-test-data';
+import { appointmentTestData } from '../test/mock-data/appointment-test-data';
 
 describe('ClientService', () => {
   beforeEach(() => TestBed.configureTestingModule({

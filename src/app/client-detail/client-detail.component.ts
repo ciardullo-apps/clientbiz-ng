@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { Client } from '../model/client';
@@ -10,7 +10,7 @@ import { ClientService } from '../services/client.service'
   styleUrls: ['./client-detail.component.css']
 })
 export class ClientDetailComponent implements OnInit {
-  @Input() client: Client;
+  client: Client;
 
   constructor(
     private route: ActivatedRoute,

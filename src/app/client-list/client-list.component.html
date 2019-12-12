@@ -48,13 +48,13 @@
           {{ client.numappts }}
         </a>
       </mat-cell>
-      <mat-footer-cell *matFooterCellDef>{{ getTotalAppts() | number }}</mat-footer-cell>
+      <mat-footer-cell id="totalAppts" *matFooterCellDef>{{ getTotalAppts() | number }}</mat-footer-cell>
     </ng-container>
 
     <ng-container matColumnDef="revenue">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Revenue</mat-header-cell>
       <mat-cell *matCellDef="let client">{{ client.revenue | currency }}</mat-cell>
-      <mat-footer-cell *matFooterCellDef>{{ getTotalRevenue() | currency }}</mat-footer-cell>
+      <mat-footer-cell id="totalRevenue" *matFooterCellDef>{{ getTotalRevenue() | currency }}</mat-footer-cell>
     </ng-container>
 
     <ng-container matColumnDef="lastapptdate">

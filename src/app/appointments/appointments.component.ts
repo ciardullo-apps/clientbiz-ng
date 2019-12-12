@@ -14,7 +14,7 @@ export class AppointmentsComponent implements OnInit {
   clientId: number;
   appointments: Appointment[];
   displayedColumns = ['id', 'topic_name', 'starttime', 'duration', 'rate', 'billingpct', 'paid'];
-  dataSource;
+  dataSource: MatTableDataSource<Appointment>;
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
