@@ -1,11 +1,2 @@
 <app-navbar></app-navbar>
-<mat-sidenav-container>
-  <mat-sidenav mode="side" [fixedInViewport]="true" opened>
-    <nav>
-      <a [routerLink]="['/clients']">Clients</a>
-    </nav>
-  </mat-sidenav>
-  <mat-sidenav-content>
-    <router-outlet></router-outlet>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+<router-outlet></router-outlet>

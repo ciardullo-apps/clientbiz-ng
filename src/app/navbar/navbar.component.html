@@ -1,18 +1,40 @@
 <mat-toolbar color="primary">
-  <span>Clientbiz Angular</span>
-  <span class="example-fill-remaining-space"></span>
-  <button mat-icon-button [matMenuTriggerFor]="menu">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <mat-menu #menu="matMenu">
-    <button id="googleBtn" *ngIf="!isLoggedIn()" mat-menu-item (click)="loginWithGoogle()">
-      <mat-icon>portrait</mat-icon>Login with Google
+  <mat-toolbar-row>
+    <span>Clientbiz Angular</span>
+    <span class="example-fill-remaining-space"></span>
+    <button class="menuIconButton" *ngIf="isLoggedIn()" mat-icon-button [matMenuTriggerFor]="createMenu">
+      <mat-icon>business</mat-icon>
     </button>
-    <button *ngIf="isLoggedIn()" (click)="openUserProfile()" mat-menu-item>
-      <mat-icon>portrait</mat-icon>User Profile
+    <button class="menuIconButton" mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>menu</mat-icon>
     </button>
-    <button *ngIf="isLoggedIn()" mat-menu-item (click)="logout()">
-      <mat-icon>logout</mat-icon>Logout
-    </button>
-  </mat-menu>
+    <mat-menu #createMenu="matMenu">
+      <button mat-menu-item [routerLink]="['/clients']">
+        <mat-icon>format_list_bulleted</mat-icon>Clients
+      </button>
+      <button mat-menu-item>
+        <mat-icon>payment</mat-icon>Payments
+      </button>
+      <button mat-menu-item>
+        <mat-icon>date_range</mat-icon>Monthly Activity
+      </button>
+      <button mat-menu-item>
+        <mat-icon>person_add</mat-icon>New Client
+      </button>
+      <button mat-menu-item>
+        <mat-icon>playlist_add</mat-icon>New Appointment
+      </button>
+    </mat-menu>
+    <mat-menu #menu="matMenu">
+      <button id="googleBtn" *ngIf="!isLoggedIn()" mat-menu-item (click)="loginWithGoogle()">
+        <mat-icon>portrait</mat-icon>Login with Google
+      </button>
+      <button *ngIf="isLoggedIn()" (click)="openUserProfile()" mat-menu-item>
+        <mat-icon>portrait</mat-icon>User Profile
+      </button>
+      <button *ngIf="isLoggedIn()" mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>Logout
+      </button>
+    </mat-menu>
+  </mat-toolbar-row>
 </mat-toolbar>
