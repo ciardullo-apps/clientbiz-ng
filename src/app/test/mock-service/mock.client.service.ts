@@ -8,7 +8,11 @@ export class MockClientService extends ClientService {
     return of(clientTestData);
   }
 
-  public getAppointments(clientId) {
+  public getAppointments(clientId: number) {
     return of(appointmentTestData.filter(appointment => appointment.client_id == clientId));
+  }
+
+  public getClient(clientId: number) {
+    return of(clientTestData.find(client => client.clientId == clientId));
   }
 }
