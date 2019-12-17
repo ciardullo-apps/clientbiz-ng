@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Receivable } from '../model/receivable';
 import { ClientService } from '../services/client.service';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-receivables',
@@ -10,6 +11,9 @@ import { ClientService } from '../services/client.service';
 export class ReceivablesComponent implements OnInit {
 
   receivables: Receivable[];
+  displayedColumns = ['appointment_id', 'firstname', 'lastname', 'topicname', 'starttime', 'duration', 'rate', 'billingpct', 'amountdue', 'paid'];
+  dataSource;
+
 
   constructor(private clientService: ClientService ) { }
 
@@ -21,6 +25,7 @@ export class ReceivablesComponent implements OnInit {
     this.clientService.getReceivables()
       .subscribe(receivables => {
         this.receivables = receivables;
+        this.dataSource = new MatTableDataSource<Receivable>(receivables);
       })
   }
 
