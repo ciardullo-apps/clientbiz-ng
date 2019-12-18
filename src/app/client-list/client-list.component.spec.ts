@@ -6,12 +6,14 @@ import { MatTableModule } from '@angular/material/table';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ClientService } from '../services/client.service';
-import { MockClientService } from '../test/mock-service/mock.client.service';
 import { By } from '@angular/platform-browser';
+import { clientTestData } from '../test/mock-data/client-test-data';
+import { of } from 'rxjs';
 
 describe('ClientListComponent', () => {
   let component: ClientListComponent;
   let fixture: ComponentFixture<ClientListComponent>;
+  let clientService : ClientService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -22,7 +24,7 @@ describe('ClientListComponent', () => {
         HttpClientTestingModule,
       ],
       providers: [
-        {provide: ClientService, useClass: MockClientService},
+        ClientService,
       ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     })
@@ -32,6 +34,8 @@ describe('ClientListComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ClientListComponent);
     component = fixture.componentInstance;
+    clientService = TestBed.get(ClientService);
+    spyOn(clientService, 'getClients').and.returnValue(of(clientTestData));
     fixture.detectChanges();
   });
 
@@ -40,6 +44,7 @@ describe('ClientListComponent', () => {
   });
 
   it('should initialize its list of clients from service', () => {
+    expect(clientService.getClients).toHaveBeenCalled();
     expect(component.clients.length).toBe(2);
     expect(component.getTotalAppts()).toBe(3);
     expect(component.getTotalRevenue()).toBe(30.0);

@@ -5,12 +5,14 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ClientDetailComponent } from './client-detail.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ClientService } from '../services/client.service';
-import { MockClientService } from '../test/mock-service/mock.client.service';
 import { ActivatedRoute } from '@angular/router';
+import { clientTestData } from '../test/mock-data/client-test-data';
+import { of } from 'rxjs';
 
 describe('ClientDetailComponent', () => {
   let component: ClientDetailComponent;
   let fixture: ComponentFixture<ClientDetailComponent>;
+  let clientService : ClientService;
   let clientId = 102;
 
   beforeEach(async(() => {
@@ -21,7 +23,7 @@ describe('ClientDetailComponent', () => {
         HttpClientTestingModule,
       ],
       providers: [
-        { provide: ClientService, useClass: MockClientService},
+        ClientService,
         { provide: ActivatedRoute,  useValue: { snapshot: { paramMap: { get() { return clientId; } } } } }
       ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
@@ -32,6 +34,9 @@ describe('ClientDetailComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ClientDetailComponent);
     component = fixture.componentInstance;
+    clientService = TestBed.get(ClientService);
+    spyOn(clientService, 'getClient').and.returnValue(
+      of(clientTestData.find(client => client.clientId === clientId)));
     fixture.detectChanges();
   });
 
