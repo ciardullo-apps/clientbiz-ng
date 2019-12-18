@@ -56,7 +56,7 @@
 
     <ng-container matColumnDef="paid">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Paid</mat-header-cell>
-      <mat-cell *matCellDef="let receivable">Mark Paid</mat-cell>
+      <mat-cell *matCellDef="let receivable"><a id="markpaid_{{receivable.appointment_id}}" (click)="onMarkPaid(receivable.appointment_id)">Mark Paid</a></mat-cell>
       <mat-footer-cell *matFooterCellDef></mat-footer-cell>
     </ng-container>
 

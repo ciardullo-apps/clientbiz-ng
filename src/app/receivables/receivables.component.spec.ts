@@ -4,17 +4,20 @@ import { ReceivablesComponent } from './receivables.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ClientService } from '../services/client.service';
-import { MockClientService } from '../test/mock-service/mock.client.service';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { By } from '@angular/platform-browser';
 import { receivableTestData } from '../test/mock-data/receivable-test-data';
+import { of } from 'rxjs';
 
 describe('ReceivablesComponent', () => {
   let component: ReceivablesComponent;
   let fixture: ComponentFixture<ReceivablesComponent>;
+  let clientService : ClientService;
+  const appointmentId = 1072;
 
   beforeEach(async(() => {
+
     TestBed.configureTestingModule({
       declarations: [ ReceivablesComponent ],
       imports: [
@@ -23,7 +26,7 @@ describe('ReceivablesComponent', () => {
         HttpClientTestingModule,
       ],
       providers: [
-        {provide: ClientService, useClass: MockClientService},
+        ClientService,
       ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     })
@@ -33,6 +36,9 @@ describe('ReceivablesComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ReceivablesComponent);
     component = fixture.componentInstance;
+    clientService = TestBed.get(ClientService);
+    spyOn(clientService, 'getReceivables').and.returnValue(of(receivableTestData));
+    spyOn(clientService, 'markPaid').and.returnValue(0);
     fixture.detectChanges();
   });
 
@@ -41,6 +47,7 @@ describe('ReceivablesComponent', () => {
   });
 
   it('should initialize its list of receivables from service', () => {
+    expect(clientService.getReceivables).toHaveBeenCalled();
     expect(component.receivables.length).toBe(4);
     expect(component.getTotalOutstanding()).toBe(62.50);
   });
@@ -67,6 +74,15 @@ describe('ReceivablesComponent', () => {
     expect(tableRows[2].nativeElement.innerHTML).toBe('$18.75');
     expect(tableRows[3].nativeElement.innerHTML).toBe('$15.00');
     expect(tableRows[4].nativeElement.innerHTML).toBe('$15.00');
+  });
+
+  it('should invoke markPaid with the correct appointment id when the link is clicked', () => {
+    // Get first "Mark Paid" anchor, which corresponds to appointmentId above
+    const link = fixture.debugElement.nativeElement.querySelector('#markpaid_' + appointmentId);
+    link.click();
+    // fixture.whenStable().then(() => {
+      expect(clientService.markPaid).toHaveBeenCalledWith(appointmentId);
+    // });
   });
 
 });

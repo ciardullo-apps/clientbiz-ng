@@ -30,4 +30,9 @@ export class ClientService {
   getReceivables(): Observable<Receivable[]> {
     return this.http.get<Receivable[]>(`${environment.apiAddress}/receivables`);
   }
+
+  markPaid(appointmentId : number) : number {
+    console.log('Marking paid', appointmentId);
+    return 0;
+  }
 }

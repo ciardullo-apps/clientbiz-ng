@@ -39,4 +39,9 @@ export class ReceivablesComponent implements OnInit {
     return totalOutstanding;
   }
 
+  onMarkPaid(appointmentId : number) : void {
+    console.log('Paid appointmentId', appointmentId);
+    this.clientService.markPaid(appointmentId);
+  }
+
 }
