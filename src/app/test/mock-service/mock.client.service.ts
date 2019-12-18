@@ -17,7 +17,9 @@ export class MockClientService extends ClientService {
   }
 
   public getClient(clientId: number): Observable<Client> {
+    // console.log(clientTestData.find(client => client.clientId == clientId));
     return of(clientTestData.find(client => client.clientId == clientId));
+    // return of(clientTestData.filter(c => c.id == clientId)[0]);
   }
 
   public getReceivables(): Observable<Receivable[]> {

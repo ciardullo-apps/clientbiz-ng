@@ -47,7 +47,7 @@ describe('ClientService', () => {
         // Call the service
         service.getClient(102).subscribe(client => {
           expect(client.clientId).toBe(102);
-          expect(client.firstname = 'Jane');
+          expect(client.firstname).toBe('Anne');
         });
 
         // Set expectations for the HttpClient mock
