@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Receivable } from '../model/receivable';
-import { ClientService } from '../services/client.service';
+import { ClientService, UpdatePaidDateResponse } from '../services/client.service';
 import { MatTableDataSource } from '@angular/material/table';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-receivables',
@@ -12,10 +13,14 @@ export class ReceivablesComponent implements OnInit {
 
   receivables: Receivable[];
   displayedColumns = ['appointment_id', 'firstname', 'lastname', 'topicname', 'starttime', 'duration', 'rate', 'billingpct', 'amountdue', 'paid'];
-  dataSource;
+  dataSource: MatTableDataSource<Receivable>;
+  paidDatePicker: FormControl;
 
-
-  constructor(private clientService: ClientService ) { }
+  constructor(private clientService: ClientService ) {
+    const todayAtMidnight = new Date();
+    todayAtMidnight.setHours(0, 0, 0, 0);
+    this.paidDatePicker = new FormControl(todayAtMidnight);
+  }
 
   ngOnInit() {
     this.getReceivables();
@@ -40,8 +45,13 @@ export class ReceivablesComponent implements OnInit {
   }
 
   onMarkPaid(appointmentId : number) : void {
-    console.log('Paid appointmentId', appointmentId);
-    this.clientService.markPaid(appointmentId);
+    console.log(this.paidDatePicker.value);
+    const paidDate = this.paidDatePicker.value.toISOString().slice(0, 10);
+    console.log(paidDate);
+    this.clientService.markPaid(appointmentId, paidDate)
+      .subscribe((resp: UpdatePaidDateResponse) => {
+        console.log(resp);
+      });
   }
 
 }

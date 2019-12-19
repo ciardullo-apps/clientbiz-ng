@@ -1,7 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import { ClientService } from './client.service';
+import { ClientService, UpdatePaidDateResponse } from './client.service';
 import { environment } from 'src/environments/environment';
 import { clientTestData } from '../test/mock-data/client-test-data';
 import { appointmentTestData } from '../test/mock-data/appointment-test-data';
@@ -62,7 +62,7 @@ describe('ClientService', () => {
   it('should retrieve one client\'s list of appointments from http get to backend',
     inject([HttpTestingController, ClientService],
       (httpMock: HttpTestingController, service: ClientService) => {
-        let clientId = 101;
+        const clientId = 101;
         // Call the service
         service.getAppointments(clientId).subscribe(data => {
           expect(data.length).toBe(2);
@@ -76,5 +76,28 @@ describe('ClientService', () => {
         // Then set the fake data returned by the mock
         req.flush(appointmentTestData.filter(appointment => appointment.client_id === clientId));
       }
+    ));
+
+    it('should update paid date for appointment via http post to backend',
+      inject([HttpTestingController, ClientService],
+        (httpMock: HttpTestingController, service: ClientService) => {
+          const appointmentId= 101;
+          let paidDate = new Date();
+          paidDate.setHours(0, 0, 0, 0);
+
+          // Call the service
+          service.markPaid(appointmentId, paidDate).subscribe((resp: UpdatePaidDateResponse) => {
+            expect(resp.updatedAppointmentId).toBe(appointmentId);
+          });
+
+          // Set expectations for the HttpClient mock
+          const req = httpMock.expectOne(`${environment.apiAddress}/updatePaidDate`);
+          expect(req.request.method).toEqual('POST');
+          expect(req.request.body.id).toBe(appointmentId);
+          expect(req.request.body.paid).toEqual(paidDate);
+
+          // Then set the fake data returned by the mock
+          req.flush({ updatedAppointmentId: appointmentId });
+        }
     ));
 });

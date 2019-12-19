@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 import { environment } from '../../environments/environment'
 import { Client } from '../model/client';
 import { Appointment } from '../model/appointment';
 import { Receivable } from '../model/receivable';
+
+export class UpdatePaidDateResponse {
+  updatedAppointmentId: number
+}
 
 @Injectable({
   providedIn: 'root'
@@ -31,8 +35,13 @@ export class ClientService {
     return this.http.get<Receivable[]>(`${environment.apiAddress}/receivables`);
   }
 
-  markPaid(appointmentId : number) : number {
+  markPaid(appointmentId : number, paidDate: Date) : Observable<UpdatePaidDateResponse> {
     console.log('Marking paid', appointmentId);
-    return 0;
+    return this.http.post<UpdatePaidDateResponse>(`${environment.apiAddress}/updatePaidDate`,
+    {
+      id: (appointmentId),
+      paid: paidDate
+    });
   }
+
 }

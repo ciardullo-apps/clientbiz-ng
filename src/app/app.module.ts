@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule }    from '@angular/common/http';
-import { MatInputModule, MatTableModule, MatToolbarModule, MatDialogModule } from '@angular/material';
+import { MatInputModule, MatTableModule, MatToolbarModule, MatDialogModule, MatButtonModule, MatNativeDateModule, MatDatepickerModule } from '@angular/material';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
@@ -44,6 +44,9 @@ import { ReceivablesComponent } from './receivables/receivables.component';
     MatIconModule,
     MatFormFieldModule,
     MatDialogModule,
+    MatButtonModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
     BrowserAnimationsModule,
     AppRoutingModule
   ],

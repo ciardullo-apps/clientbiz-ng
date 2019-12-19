@@ -9,6 +9,8 @@ import { MatTableModule } from '@angular/material/table';
 import { By } from '@angular/platform-browser';
 import { receivableTestData } from '../test/mock-data/receivable-test-data';
 import { of } from 'rxjs';
+import { MatDatepickerModule, MatNativeDateModule } from '@angular/material';
+import { FormsModule } from '@angular/forms';
 
 describe('ReceivablesComponent', () => {
   let component: ReceivablesComponent;
@@ -23,7 +25,10 @@ describe('ReceivablesComponent', () => {
       imports: [
         RouterTestingModule,
         MatTableModule,
+        MatNativeDateModule,
+        MatDatepickerModule,
         HttpClientTestingModule,
+        FormsModule,
       ],
       providers: [
         ClientService,
@@ -38,7 +43,7 @@ describe('ReceivablesComponent', () => {
     component = fixture.componentInstance;
     clientService = TestBed.get(ClientService);
     spyOn(clientService, 'getReceivables').and.returnValue(of(receivableTestData));
-    spyOn(clientService, 'markPaid').and.returnValue(0);
+    spyOn(clientService, 'markPaid').and.returnValue(of({ updatedAppointmentId: appointmentId }));
     fixture.detectChanges();
   });
 
@@ -50,6 +55,12 @@ describe('ReceivablesComponent', () => {
     expect(clientService.getReceivables).toHaveBeenCalled();
     expect(component.receivables.length).toBe(4);
     expect(component.getTotalOutstanding()).toBe(62.50);
+  });
+
+  it('should initialize its paidDate to today', () => {
+    const todayAtMidnight = new Date();
+    todayAtMidnight.setHours(0, 0, 0, 0);
+    expect(component.paidDatePicker.value).toEqual(todayAtMidnight);
   });
 
   it('should render total outstanding as currency', () => {
@@ -76,12 +87,14 @@ describe('ReceivablesComponent', () => {
     expect(tableRows[4].nativeElement.innerHTML).toBe('$15.00');
   });
 
-  it('should invoke markPaid with the correct appointment id when the link is clicked', () => {
-    // Get first "Mark Paid" anchor, which corresponds to appointmentId above
+  it('should invoke markPaid with the correct appointment id and date when the link is clicked', () => {
+    const spy = spyOn(component, "onMarkPaid").and.callThrough();
     const link = fixture.debugElement.nativeElement.querySelector('#markpaid_' + appointmentId);
     link.click();
     // fixture.whenStable().then(() => {
-      expect(clientService.markPaid).toHaveBeenCalledWith(appointmentId);
+    expect(component.onMarkPaid).toHaveBeenCalledWith(appointmentId);
+    expect(clientService.markPaid).toHaveBeenCalledWith(appointmentId,
+      component.paidDatePicker.value.toISOString().slice(0, 10));
     // });
   });
 

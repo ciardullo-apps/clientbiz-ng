@@ -1,3 +1,8 @@
+<mat-form-field>
+  <input matInput [matDatepicker]="picker" placeholder="Choose a date"  [(ngModel)]="paidDatePicker.value">
+  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker></mat-datepicker>
+</mat-form-field>
 <mat-table [dataSource]="dataSource" matSort>
 
     <ng-container matColumnDef="appointment_id">
@@ -38,7 +43,7 @@
 
     <ng-container matColumnDef="rate">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Hourly Rate</mat-header-cell>
-      <mat-cell *matCellDef="let receivable">{{ receivable.rate }}</mat-cell>
+      <mat-cell *matCellDef="let receivable">{{ receivable.rate | number:'1.2-2' }}</mat-cell>
       <mat-footer-cell *matFooterCellDef></mat-footer-cell>
     </ng-container>
 
@@ -56,7 +61,9 @@
 
     <ng-container matColumnDef="paid">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Paid</mat-header-cell>
-      <mat-cell *matCellDef="let receivable"><a id="markpaid_{{receivable.appointment_id}}" (click)="onMarkPaid(receivable.appointment_id)">Mark Paid</a></mat-cell>
+      <mat-cell *matCellDef="let receivable">
+        <button mat-button color="primary" id="markpaid_{{receivable.appointment_id}}" class="" (click)="onMarkPaid(receivable.appointment_id)">Mark Paid</button>
+      </mat-cell>
       <mat-footer-cell *matFooterCellDef></mat-footer-cell>
     </ng-container>
 
