@@ -8,6 +8,7 @@ import { ClientService } from '../services/client.service';
 import { ActivatedRoute } from '@angular/router';
 import { clientTestData } from '../test/mock-data/client-test-data';
 import { of } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 
 describe('ClientDetailComponent', () => {
   let component: ClientDetailComponent;
@@ -21,6 +22,7 @@ describe('ClientDetailComponent', () => {
       imports: [
         RouterTestingModule,
         HttpClientTestingModule,
+        FormsModule,
       ],
       providers: [
         ClientService,

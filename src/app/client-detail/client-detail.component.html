@@ -4,31 +4,31 @@
       <input matInput placeholder="ID" value="{{client.clientId}}" />
     </mat-form-field>
     <mat-form-field class="client-full-width">
-        <input matInput placeholder="First name" value="{{client.firstname}}" />
+        <input matInput name="firstname" placeholder="First name" [(ngModel)]="client.firstname" />
     </mat-form-field>
     <mat-form-field class="client-full-width">
-        <input matInput placeholder="Last name" value="{{client.lastname}}" />
+        <input matInput name="lastname" placeholder="Last name" [(ngModel)]="client.lastname" />
     </mat-form-field>
     <mat-form-field class="client-full-width">
-        <input matInput placeholder="Contact name" value="{{client.contactname}}" />
+        <input matInput name="contactname" placeholder="Contact name" [(ngModel)]="client.contactname" />
     </mat-form-field>
     <mat-form-field class="client-full-width">
-        <input matInput placeholder="City" value="{{client.city}}" />
+        <input matInput name="city" placeholder="City" [(ngModel)]="client.city" />
     </mat-form-field>
     <mat-form-field class="client-full-width">
-        <input matInput placeholder="State" value="{{client.state}}" />
+        <input matInput placeholder="State" name="state" [(ngModel)]="client.state" />
     </mat-form-field>
     <mat-form-field class="client-full-width">
-        <input matInput placeholder="Timezone" value="{{client.timezone}}" />
+        <input matInput placeholder="Timezone" name="timezone" [(ngModel)]="client.timezone" />
     </mat-form-field>
-    <mat-checkbox class="client-full-width" [checked]="client.solicited===1" labelPosition="before">
+    <mat-checkbox class="client-full-width" name="solicited" [(ngModel)]="client.solicited" [checked]="client.solicited===1" labelPosition="before">
       <mat-label>Solicited</mat-label>
     </mat-checkbox>
     <mat-form-field *ngIf="client.solicited===1" class="client-full-width">
-        <input matInput type="datetime-local" value="{{client.firstcontact}}" placeholder="First contacted" />
+        <input matInput type="datetime-local" name="firstcontact" [(ngModel)]="client.firstcontact" placeholder="First contacted" />
     </mat-form-field>
     <mat-form-field class="client-full-width">
-        <input matInput type="datetime-local" value="{{client.firstresponse}}" placeholder="First responded" />
+        <input matInput type="datetime-local" name="firstresponse" [(ngModel)]="client.firstresponse" placeholder="First responded" />
     </mat-form-field>
   </div>
 </form>
