@@ -1,6 +1,6 @@
 <form class="client-form">
   <div *ngIf="client" style="padding: 10px">
-    <mat-form-field class="client-full-width">
+    <mat-form-field *ngIf="client.clientId" class="client-full-width">
       <input matInput placeholder="ID" value="{{client.clientId}}" />
     </mat-form-field>
     <mat-form-field class="client-full-width">
@@ -21,11 +21,11 @@
     <mat-form-field class="client-full-width">
         <input matInput placeholder="Timezone" name="timezone" [(ngModel)]="client.timezone" />
     </mat-form-field>
-    <mat-checkbox class="client-full-width" name="solicited" [(ngModel)]="client.solicited" [checked]="client.solicited===1" labelPosition="before">
+    <mat-checkbox  id="solicited" class="client-full-width" name="solicited" [(ngModel)]="client.solicited" [checked]="client.solicited===1" labelPosition="before" (click)="toggleFirstContact()">
       <mat-label>Solicited</mat-label>
     </mat-checkbox>
-    <mat-form-field *ngIf="client.solicited===1" class="client-full-width">
-        <input matInput type="datetime-local" name="firstcontact" [(ngModel)]="client.firstcontact" placeholder="First contacted" />
+    <mat-form-field class="client-full-width">
+        <input id="firstcontact" matInput type="datetime-local" name="firstcontact" [(ngModel)]="client.firstcontact" [disabled]="!(!!client.firstcontact)" placeholder="First contacted" />
     </mat-form-field>
     <mat-form-field class="client-full-width">
         <input matInput type="datetime-local" name="firstresponse" [(ngModel)]="client.firstresponse" placeholder="First responded" />
