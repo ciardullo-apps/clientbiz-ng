@@ -12,7 +12,6 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { By } from '@angular/platform-browser';
 
 describe('ClientDetailComponent', () => {
   let component: ClientDetailComponent;
@@ -68,13 +67,13 @@ describe('ClientDetailComponent', () => {
     // TODO Why does nativeElement.querySelector(':checked') return null?
     const solicited = fixture.debugElement.nativeElement.querySelector('#solicited');
 
-    expect(component.client.firstcontact).toBe(originalFirstContact);
+    expect(component.client.firstcontact).toEqual(originalFirstContact);
 
     solicited.click();
     expect(component.client.firstcontact).toBeNull();
 
     solicited.click();
-    expect(component.client.firstcontact).toBe(originalFirstContact);
+    expect(component.client.firstcontact).toEqual(originalFirstContact);
 
     solicited.click();
     expect(component.client.firstcontact).toBeNull();

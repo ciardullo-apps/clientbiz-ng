@@ -10,6 +10,7 @@ import { ReceivablesComponent } from './receivables/receivables.component';
 const routes: Routes = [
   { path: 'clients',  component: ClientListComponent },
   { path: 'client/:id',  component: ClientDetailComponent },
+  { path: 'client',  component: ClientDetailComponent },
   { path: 'appointments/:id', component: AppointmentsComponent },
   { path: 'receivables', component: ReceivablesComponent }
   // { path: '', redirectTo: '/clients', pathMatch: 'full' },

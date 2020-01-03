@@ -6,8 +6,8 @@ export class Client {
   contactname: string;
   city: string;
   state: string;
-  firstcontact: string;
-  firstresponse: string;
+  firstcontact: Date;
+  firstresponse: Date;
   timezone: string;
   solicited: boolean;
   numappts: number;

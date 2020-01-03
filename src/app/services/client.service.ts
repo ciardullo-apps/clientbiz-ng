@@ -11,6 +11,10 @@ export class UpdatePaidDateResponse {
   updatedAppointmentId: number
 }
 
+export class UpdateClientResponse {
+  updatedClientId: number
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -44,4 +48,10 @@ export class ClientService {
     });
   }
 
+  saveClient(client: Client) : Observable<UpdateClientResponse> {
+    console.log('Saving client', client.id);
+    return this.http.post<UpdateClientResponse>(`${environment.apiAddress}/saveClient`,
+      client
+    );
+  }
 }

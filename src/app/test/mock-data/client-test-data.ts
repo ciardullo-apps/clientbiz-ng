@@ -1,4 +1,6 @@
-export const clientTestData = [
+import { Client } from "src/app/model/client";
+
+export const clientTestData : Client[] = [
   {
     id: 101,
     clientId: 101,
@@ -7,8 +9,8 @@ export const clientTestData = [
     contactname: 'No one',
     city: 'Anytown',
     state: 'DE',
-    firstcontact: '2019-01-01 12:15 PM',
-    firstresponse: '2019-01-02 11:45 AM',
+    firstcontact: new Date(Date.parse('2019-01-01T12:15:00')),
+    firstresponse: new Date(Date.parse('2019-01-02T11:45:00')),
     timezone: 'US/Eastern',
     solicited: true,
     numappts: 1,
@@ -24,7 +26,7 @@ export const clientTestData = [
     city: 'Sometown',
     state: 'NE',
     firstcontact: null,
-    firstresponse: '2019-02-02 11:45 AM',
+    firstresponse: new Date(Date.parse('2019-02-02T11:45 AM')),
     timezone: 'US/Mountain',
     solicited: false,
     numappts: 2,

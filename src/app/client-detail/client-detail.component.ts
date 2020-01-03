@@ -11,7 +11,7 @@ import { ClientService } from '../services/client.service'
 })
 export class ClientDetailComponent implements OnInit {
   client: Client;
-  originalFirstContact: string;
+  originalFirstContact: Date;
 
   constructor(
     private route: ActivatedRoute,
@@ -31,7 +31,7 @@ export class ClientDetailComponent implements OnInit {
         .subscribe(client => {
           this.client = client;
           if(!this.client.firstcontact) {
-            this.originalFirstContact = this.now();
+            this.originalFirstContact = this.nextHourDate();
           } else {
             this.originalFirstContact = this.client.firstcontact;
           }
@@ -39,8 +39,9 @@ export class ClientDetailComponent implements OnInit {
     } else {
       this.client = new Client();
       this.client.solicited = true;
-      this.client.firstcontact = this.now();
+      this.client.firstcontact = this.nextHourDate();
       this.originalFirstContact = this.client.firstcontact;
+      this.client.firstresponse = this.client.firstcontact;
     }
 
   }
@@ -53,10 +54,25 @@ export class ClientDetailComponent implements OnInit {
     }
   }
 
-  now() : string {
-    let offset = new Date().getTimezoneOffset();
-    let now = new Date();
-    now.setMinutes(now.getMinutes() - offset);
-    return now.toISOString().slice(0, 16);
+  saveClient() : void {
+    if(this.client.id) {
+      console.log('Saving client', this.client.id);
+    } else {
+      console.log('Adding client', this.client.firstname, this.client.lastname);
+    }
+
+    this.clientService.saveClient(this.client)
+      .subscribe(UpdateClientResponse => {
+        console.log(`Client id ${this.client.id} saved`);
+      });
+  }
+
+  nextHourDate() : Date {
+    // Advance to next hour
+    var date = new Date();
+    var nextHour = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
+    nextHour.setMinutes(0);
+    nextHour.setHours(nextHour.getHours() + 1);
+    return nextHour;
   }
 }

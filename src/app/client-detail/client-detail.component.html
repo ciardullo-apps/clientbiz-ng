@@ -1,34 +1,35 @@
-<form class="client-form">
-  <div *ngIf="client" style="padding: 10px">
+<form class="client-form" name="form" (ngSubmit)="f.form.valid && saveClient()" #f="ngForm" novalidate>
+    <div *ngIf="client" style="padding: 10px">
     <mat-form-field *ngIf="client.clientId" class="client-full-width">
       <input matInput placeholder="ID" value="{{client.clientId}}" />
     </mat-form-field>
     <mat-form-field class="client-full-width">
-        <input matInput name="firstname" placeholder="First name" [(ngModel)]="client.firstname" />
+        <input matInput name="firstname" placeholder="First name" [(ngModel)]="client.firstname" required />
     </mat-form-field>
     <mat-form-field class="client-full-width">
-        <input matInput name="lastname" placeholder="Last name" [(ngModel)]="client.lastname" />
+        <input matInput name="lastname" placeholder="Last name" [(ngModel)]="client.lastname" required />
     </mat-form-field>
     <mat-form-field class="client-full-width">
         <input matInput name="contactname" placeholder="Contact name" [(ngModel)]="client.contactname" />
     </mat-form-field>
     <mat-form-field class="client-full-width">
-        <input matInput name="city" placeholder="City" [(ngModel)]="client.city" />
+        <input matInput name="city" placeholder="City" [(ngModel)]="client.city" required />
     </mat-form-field>
     <mat-form-field class="client-full-width">
-        <input matInput placeholder="State" name="state" [(ngModel)]="client.state" />
+        <input matInput placeholder="State" name="state" [(ngModel)]="client.state" required />
     </mat-form-field>
     <mat-form-field class="client-full-width">
-        <input matInput placeholder="Timezone" name="timezone" [(ngModel)]="client.timezone" />
+        <input matInput placeholder="Timezone" name="timezone" [(ngModel)]="client.timezone" required />
     </mat-form-field>
     <mat-checkbox  id="solicited" class="client-full-width" name="solicited" [(ngModel)]="client.solicited" [checked]="client.solicited===1" labelPosition="before" (click)="toggleFirstContact()">
       <mat-label>Solicited</mat-label>
     </mat-checkbox>
     <mat-form-field class="client-full-width">
-        <input id="firstcontact" matInput type="datetime-local" name="firstcontact" [(ngModel)]="client.firstcontact" [disabled]="!(!!client.firstcontact)" placeholder="First contacted" />
+        <input id="firstcontact" matInput type="datetime-local" name="firstcontact" [ngModel]="client.firstcontact | date:'yyyy-MM-ddThh:mm'" (ngModelChange)="client.firstcontact = $event" [disabled]="!(!!client.firstcontact)" placeholder="First contacted" />
     </mat-form-field>
     <mat-form-field class="client-full-width">
-        <input matInput type="datetime-local" name="firstresponse" [(ngModel)]="client.firstresponse" placeholder="First responded" />
+        <input matInput type="datetime-local" name="firstresponse" [ngModel]="client.firstresponse | date:'yyyy-MM-ddThh:mm'" (ngModelChange)="client.firstresponse = $event" placeholder="First responded" required />
     </mat-form-field>
+    <button mat-button>Submit</button>
   </div>
 </form>
