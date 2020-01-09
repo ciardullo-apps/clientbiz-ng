@@ -49,7 +49,7 @@ export class ClientService {
   }
 
   saveClient(client: Client) : Observable<UpdateClientResponse> {
-    console.log('Saving client', client.id);
+    console.log('Saving client 2', client.id);
     return this.http.post<UpdateClientResponse>(`${environment.apiAddress}/saveClient`,
       client
     );

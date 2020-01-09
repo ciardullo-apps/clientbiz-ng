@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
 import { Client } from '../model/client';
-import { ClientService } from '../services/client.service'
+import { ClientService, UpdateClientResponse } from '../services/client.service'
 
 @Component({
   selector: 'app-client-detail',
@@ -16,7 +15,6 @@ export class ClientDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private clientService: ClientService,
-    private location: Location,
   ) { }
 
   ngOnInit() {
@@ -56,14 +54,14 @@ export class ClientDetailComponent implements OnInit {
 
   saveClient() : void {
     if(this.client.id) {
-      console.log('Saving client', this.client.id);
+      console.log('Saving client 1', this.client.id);
     } else {
       console.log('Adding client', this.client.firstname, this.client.lastname);
     }
 
     this.clientService.saveClient(this.client)
-      .subscribe(UpdateClientResponse => {
-        console.log(`Client id ${this.client.id} saved`);
+      .subscribe((response: UpdateClientResponse) => {
+        console.log(`Client id ${response.updatedClientId} saved`);
       });
   }
 

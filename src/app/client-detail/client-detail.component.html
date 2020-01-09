@@ -1,10 +1,10 @@
-<form class="client-form" name="form" (ngSubmit)="f.form.valid && saveClient()" #f="ngForm" novalidate>
+<form class="client-form" name="form" (ngSubmit)="clientForm.form.valid && saveClient()" #clientForm ="ngForm">
     <div *ngIf="client" style="padding: 10px">
     <mat-form-field *ngIf="client.clientId" class="client-full-width">
       <input matInput placeholder="ID" value="{{client.clientId}}" />
     </mat-form-field>
     <mat-form-field class="client-full-width">
-        <input matInput name="firstname" placeholder="First name" [(ngModel)]="client.firstname" required />
+        <input id="firstName" matInput name="firstname" placeholder="First name" [(ngModel)]="client.firstname" required />
     </mat-form-field>
     <mat-form-field class="client-full-width">
         <input matInput name="lastname" placeholder="Last name" [(ngModel)]="client.lastname" required />
@@ -25,11 +25,11 @@
       <mat-label>Solicited</mat-label>
     </mat-checkbox>
     <mat-form-field class="client-full-width">
-        <input id="firstcontact" matInput type="datetime-local" name="firstcontact" [ngModel]="client.firstcontact | date:'yyyy-MM-ddThh:mm'" (ngModelChange)="client.firstcontact = $event" [disabled]="!(!!client.firstcontact)" placeholder="First contacted" />
+        <input id="firstcontact" matInput type="datetime-local" name="firstcontact" [ngModel]="client.firstcontact | date:'yyyy-MM-ddTHH:mm'" (ngModelChange)="client.firstcontact = $event" [disabled]="!(!!client.firstcontact)" placeholder="First contacted" />
     </mat-form-field>
     <mat-form-field class="client-full-width">
-        <input matInput type="datetime-local" name="firstresponse" [ngModel]="client.firstresponse | date:'yyyy-MM-ddThh:mm'" (ngModelChange)="client.firstresponse = $event" placeholder="First responded" required />
+        <input matInput type="datetime-local" name="firstresponse" [ngModel]="client.firstresponse | date:'yyyy-MM-ddTHH:mm'" (ngModelChange)="client.firstresponse = $event" placeholder="First responded" required />
     </mat-form-field>
-    <button mat-button>Submit</button>
+    <button mat-raised-button color="primary" id="submit">Submit</button>
   </div>
 </form>
