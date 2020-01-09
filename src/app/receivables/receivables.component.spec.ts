@@ -15,10 +15,13 @@ import { FormsModule } from '@angular/forms';
 describe('ReceivablesComponent', () => {
   let component: ReceivablesComponent;
   let fixture: ComponentFixture<ReceivablesComponent>;
-  let clientService : ClientService;
+  let clientServiceSpy : any;
   const appointmentId = 1072;
 
   beforeEach(async(() => {
+    clientServiceSpy = jasmine.createSpyObj('ClientService', ['getReceivables', 'markPaid']);
+    clientServiceSpy.getReceivables.and.returnValue(of(receivableTestData));
+    clientServiceSpy.markPaid.and.returnValue(of({ updatedAppointmentId: appointmentId }));
 
     TestBed.configureTestingModule({
       declarations: [ ReceivablesComponent ],
@@ -31,7 +34,7 @@ describe('ReceivablesComponent', () => {
         FormsModule,
       ],
       providers: [
-        ClientService,
+        { provide: ClientService, useValue: clientServiceSpy },
       ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     })
@@ -41,9 +44,6 @@ describe('ReceivablesComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ReceivablesComponent);
     component = fixture.componentInstance;
-    clientService = TestBed.get(ClientService);
-    spyOn(clientService, 'getReceivables').and.returnValue(of(receivableTestData));
-    spyOn(clientService, 'markPaid').and.returnValue(of({ updatedAppointmentId: appointmentId }));
     fixture.detectChanges();
   });
 
@@ -52,7 +52,7 @@ describe('ReceivablesComponent', () => {
   });
 
   it('should initialize its list of receivables from service', () => {
-    expect(clientService.getReceivables).toHaveBeenCalled();
+    expect(clientServiceSpy.getReceivables).toHaveBeenCalled();
     expect(component.receivables.length).toBe(4);
     expect(component.getTotalOutstanding()).toBe(62.50);
   });
@@ -88,12 +88,12 @@ describe('ReceivablesComponent', () => {
   });
 
   it('should invoke markPaid with the correct appointment id and date when the link is clicked', () => {
-    const spy = spyOn(component, "onMarkPaid").and.callThrough();
+    spyOn(component, "onMarkPaid").and.callThrough();
     const link = fixture.debugElement.nativeElement.querySelector('#markpaid_' + appointmentId);
     link.click();
     // fixture.whenStable().then(() => {
     expect(component.onMarkPaid).toHaveBeenCalledWith(appointmentId);
-    expect(clientService.markPaid).toHaveBeenCalledWith(appointmentId,
+    expect(clientServiceSpy.markPaid).toHaveBeenCalledWith(appointmentId,
       component.paidDatePicker.value.toISOString().slice(0, 10));
     // });
   });

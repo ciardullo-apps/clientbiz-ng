@@ -13,10 +13,13 @@ import { appointmentTestData } from '../test/mock-data/appointment-test-data';
 describe('AppointmentsComponent', () => {
   let component: AppointmentsComponent;
   let fixture: ComponentFixture<AppointmentsComponent>;
-  let clientService : ClientService;
+  let clientServiceSpy: any;
   let clientId = 101;
 
   beforeEach(async(() => {
+    clientServiceSpy = jasmine.createSpyObj('ClientService', ['getAppointments']);
+    clientServiceSpy.getAppointments.and.returnValue(of(appointmentTestData.filter((appointment => appointment.client_id === clientId))));
+
     TestBed.configureTestingModule({
       declarations: [ AppointmentsComponent ],
       imports: [
@@ -25,8 +28,8 @@ describe('AppointmentsComponent', () => {
         RouterTestingModule,
       ],
       providers: [
-        ClientService,
-        { provide: ActivatedRoute,  useValue: { snapshot: { paramMap: { get() { return clientId; } } } } }
+        { provide: ClientService, useValue: clientServiceSpy },
+        { provide: ActivatedRoute, useValue: { snapshot: { paramMap: { get() { return clientId; } } } } }
       ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     })
@@ -36,9 +39,6 @@ describe('AppointmentsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AppointmentsComponent);
     component = fixture.componentInstance;
-    clientService = TestBed.get(ClientService);
-    spyOn(clientService, 'getAppointments').and.returnValue(
-      of(appointmentTestData.filter((appointment => appointment.client_id === clientId))));
     fixture.detectChanges();
   });
 
@@ -47,7 +47,7 @@ describe('AppointmentsComponent', () => {
   });
 
   it('should initialize its list of appointments from service', () => {
-    expect(clientService.getAppointments).toHaveBeenCalled();
+    expect(clientServiceSpy.getAppointments).toHaveBeenCalled();
     expect(component.appointments.length).toBe(2);
     expect(component.clientId).toBe(clientId);
     expect(component.appointments.map(appointment => appointment.duration).reduce((sum, value) => sum + value)).toBe(150);

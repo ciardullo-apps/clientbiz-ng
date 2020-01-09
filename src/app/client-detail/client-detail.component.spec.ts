@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
@@ -17,14 +17,12 @@ describe('ClientDetailComponent', () => {
   let component: ClientDetailComponent;
   let fixture: ComponentFixture<ClientDetailComponent>;
   let clientId = 101;
-  let getClientSpy: any;
-  let saveClientSpy: any;
+  let clientServiceSpy: any;
 
   beforeEach(async(() => {
-    const clientService = jasmine.createSpyObj('ClientService', ['getClient', 'saveClient']);
-
-    getClientSpy = clientService.getClient.and.returnValue( of(clientTestData.find(client => client.clientId === clientId)));
-    saveClientSpy = clientService.saveClient.and.returnValue(of({ updatedClientId: clientId }));
+    clientServiceSpy = jasmine.createSpyObj('ClientService', ['getClient', 'saveClient']);
+    clientServiceSpy.getClient.and.returnValue( of(clientTestData.find(client => client.clientId === clientId)));
+    clientServiceSpy.saveClient.and.returnValue(of({ updatedClientId: clientId }));
 
     TestBed.configureTestingModule({
       declarations: [ ClientDetailComponent ],
@@ -37,7 +35,7 @@ describe('ClientDetailComponent', () => {
         FormsModule,
       ],
       providers: [
-        { provide: ClientService, useValue: clientService },
+        { provide: ClientService, useValue: clientServiceSpy },
         { provide: ActivatedRoute, useValue: { snapshot: { paramMap: { get() { return clientId; } } } } }
       ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
@@ -56,7 +54,7 @@ describe('ClientDetailComponent', () => {
   });
 
   it('should initialize its client data from service', () => {
-    expect(getClientSpy).toHaveBeenCalled();
+    expect(clientServiceSpy.getClient).toHaveBeenCalled();
     expect(component.client.clientId).toBe(101);
     expect(component.client.firstname).toBe('Jane');
     expect(component.client.lastname).toBe('Doe');
@@ -128,7 +126,7 @@ describe('ClientDetailComponent', () => {
     submit.click();
 
     expect(component.saveClient).toHaveBeenCalled();
-    expect(saveClientSpy).toHaveBeenCalled();
+    expect(clientServiceSpy.saveClient).toHaveBeenCalled();
   });
 
 });
