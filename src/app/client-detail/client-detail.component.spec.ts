@@ -16,10 +16,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 describe('ClientDetailComponent', () => {
   let component: ClientDetailComponent;
   let fixture: ComponentFixture<ClientDetailComponent>;
-  let clientService : ClientService;
   let clientId = 101;
+  let getClientSpy: any;
+  let saveClientSpy: any;
 
   beforeEach(async(() => {
+    const clientService = jasmine.createSpyObj('ClientService', ['getClient', 'saveClient']);
+
+    getClientSpy = clientService.getClient.and.returnValue( of(clientTestData.find(client => client.clientId === clientId)));
+    saveClientSpy = clientService.saveClient.and.returnValue(of({ updatedClientId: clientId }));
+
     TestBed.configureTestingModule({
       declarations: [ ClientDetailComponent ],
       imports: [
@@ -31,8 +37,8 @@ describe('ClientDetailComponent', () => {
         FormsModule,
       ],
       providers: [
-        ClientService,
-        { provide: ActivatedRoute,  useValue: { snapshot: { paramMap: { get() { return clientId; } } } } }
+        { provide: ClientService, useValue: clientService },
+        { provide: ActivatedRoute, useValue: { snapshot: { paramMap: { get() { return clientId; } } } } }
       ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     })
@@ -42,11 +48,6 @@ describe('ClientDetailComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ClientDetailComponent);
     component = fixture.componentInstance;
-    clientService = TestBed.get(ClientService);
-    spyOn(clientService, 'getClient').and.returnValue(
-      of(clientTestData.find(client => client.clientId === clientId)));
-    spyOn(clientService, 'saveClient').and.returnValue(
-      of({ updatedClientId: clientId }));
     fixture.detectChanges();
   });
 
@@ -55,6 +56,7 @@ describe('ClientDetailComponent', () => {
   });
 
   it('should initialize its client data from service', () => {
+    expect(getClientSpy).toHaveBeenCalled();
     expect(component.client.clientId).toBe(101);
     expect(component.client.firstname).toBe('Jane');
     expect(component.client.lastname).toBe('Doe');
@@ -126,7 +128,7 @@ describe('ClientDetailComponent', () => {
     submit.click();
 
     expect(component.saveClient).toHaveBeenCalled();
-    expect(clientService.saveClient).toHaveBeenCalled();
+    expect(saveClientSpy).toHaveBeenCalled();
   });
 
 });
