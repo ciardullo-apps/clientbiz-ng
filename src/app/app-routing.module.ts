@@ -6,13 +6,15 @@ import { ClientListComponent } from './client-list/client-list.component'
 import { ClientDetailComponent } from './client-detail/client-detail.component'
 import { AppointmentsComponent } from './appointments/appointments.component'
 import { ReceivablesComponent } from './receivables/receivables.component';
+import { AppointmentDetailComponent } from './appointment-detail/appointment-detail.component';
 
 const routes: Routes = [
   { path: 'clients',  component: ClientListComponent },
   { path: 'client/:id',  component: ClientDetailComponent },
   { path: 'client',  component: ClientDetailComponent },
   { path: 'appointments/:id', component: AppointmentsComponent },
-  { path: 'receivables', component: ReceivablesComponent }
+  { path: 'receivables', component: ReceivablesComponent },
+  { path: 'appointment',  component: AppointmentDetailComponent }
   // { path: '', redirectTo: '/clients', pathMatch: 'full' },
 ];
 

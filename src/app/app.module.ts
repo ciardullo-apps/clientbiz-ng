@@ -18,6 +18,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppointmentsComponent } from './appointments/appointments.component';
 import { NavbarComponent, ProfileDialogComponent } from './navbar/navbar.component';
 import { ReceivablesComponent } from './receivables/receivables.component';
+import { AppointmentDetailComponent } from './appointment-detail/appointment-detail.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { ReceivablesComponent } from './receivables/receivables.component';
     AppointmentsComponent,
     NavbarComponent,
     ProfileDialogComponent,
-    ReceivablesComponent
+    ReceivablesComponent,
+    AppointmentDetailComponent
   ],
   imports: [
     BrowserModule,
