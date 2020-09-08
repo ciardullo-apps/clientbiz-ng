@@ -67,8 +67,7 @@ export class ClientDetailComponent implements OnInit {
 
   nextHourDate() : Date {
     // Advance to next hour
-    var date = new Date();
-    var nextHour = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
+    var nextHour = new Date();
     nextHour.setMinutes(0);
     nextHour.setHours(nextHour.getHours() + 1);
     return nextHour;

@@ -1,15 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
 html, body { height: 100%; }
-body { margin: 0; font-family: 'Roboto', sans-serif; }
-.client-form {
+body { font-family: 'Roboto', sans-serif; }
+form {
   min-width: 150px;
   max-width: 500px;
   width: 20%;
+  display: inline-block;
 }
 .client-full-width {
   width: 100%;
 }
-
+.receivable-class {
+  width: 80%;
+  padding: 10px;
+}
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -1,74 +1,76 @@
-<mat-form-field>
-  <input matInput [matDatepicker]="picker" placeholder="Choose a date"  [(ngModel)]="paidDatePicker.value">
-  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-  <mat-datepicker #picker></mat-datepicker>
-</mat-form-field>
-<mat-table [dataSource]="dataSource" matSort>
+<div class="receivable-class">
+  <mat-form-field>
+    <input matInput [matDatepicker]="picker" placeholder="Choose a date"  [(ngModel)]="paidDatePicker.value">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  <mat-table [dataSource]="dataSource" matSort>
 
-    <ng-container matColumnDef="appointment_id">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Appointment ID</mat-header-cell>
-      <mat-cell *matCellDef="let receivable">{{ receivable.appointment_id }}</mat-cell>
-      <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="firstname">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>First Name</mat-header-cell>
-      <mat-cell *matCellDef="let receivable">{{ receivable.firstname }}</mat-cell>
-      <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="lastname">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</mat-header-cell>
-      <mat-cell *matCellDef="let receivable">{{ receivable.lastname }}</mat-cell>
-      <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="topicname">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Topic</mat-header-cell>
-      <mat-cell *matCellDef="let receivable">{{ receivable.topicname }}</mat-cell>
-      <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="starttime">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Start time</mat-header-cell>
-      <mat-cell *matCellDef="let receivable">{{ receivable.starttime | date:'short' : 'UTC' }}</mat-cell>
-      <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="duration">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Duration</mat-header-cell>
-        <mat-cell *matCellDef="let receivable">{{ receivable.duration }}</mat-cell>
+      <ng-container matColumnDef="appointment_id">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Appointment ID</mat-header-cell>
+        <mat-cell *matCellDef="let receivable">{{ receivable.appointment_id }}</mat-cell>
         <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-    </ng-container>
+      </ng-container>
 
-    <ng-container matColumnDef="rate">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Hourly Rate</mat-header-cell>
-      <mat-cell *matCellDef="let receivable">{{ receivable.rate | number:'1.2-2' }}</mat-cell>
-      <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-    </ng-container>
+      <ng-container matColumnDef="firstname">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>First Name</mat-header-cell>
+        <mat-cell *matCellDef="let receivable">{{ receivable.firstname }}</mat-cell>
+        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="billingpct">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Billing %</mat-header-cell>
-      <mat-cell *matCellDef="let receivable">{{ receivable.billingpct }}</mat-cell>
-      <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-    </ng-container>
+      <ng-container matColumnDef="lastname">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</mat-header-cell>
+        <mat-cell *matCellDef="let receivable">{{ receivable.lastname }}</mat-cell>
+        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="amountdue">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Amount Due</mat-header-cell>
-      <mat-cell *matCellDef="let receivable">{{ receivable.rate * (receivable.duration / 60) * receivable.billingpct | currency }}</mat-cell>
-      <mat-footer-cell id="totalOutstanding" *matFooterCellDef>{{ getTotalOutstanding() | currency }}</mat-footer-cell>
-    </ng-container>
+      <ng-container matColumnDef="topicname">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Topic</mat-header-cell>
+        <mat-cell *matCellDef="let receivable">{{ receivable.topicname }}</mat-cell>
+        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="paid">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Paid</mat-header-cell>
-      <mat-cell *matCellDef="let receivable">
-        <button mat-button color="primary" id="markpaid_{{receivable.appointment_id}}" class="" (click)="onMarkPaid(receivable.appointment_id)">Mark Paid</button>
-      </mat-cell>
-      <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-    </ng-container>
+      <ng-container matColumnDef="starttime">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Start time</mat-header-cell>
+        <mat-cell *matCellDef="let receivable">{{ receivable.starttime | date:'short' : 'UTC' }}</mat-cell>
+        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+      </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    <mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></mat-footer-row>
+      <ng-container matColumnDef="duration">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Duration</mat-header-cell>
+          <mat-cell *matCellDef="let receivable">{{ receivable.duration }}</mat-cell>
+          <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+      </ng-container>
 
-</mat-table>
+      <ng-container matColumnDef="rate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Hourly Rate</mat-header-cell>
+        <mat-cell *matCellDef="let receivable">{{ receivable.rate | number:'1.2-2' }}</mat-cell>
+        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="billingpct">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Billing %</mat-header-cell>
+        <mat-cell *matCellDef="let receivable">{{ receivable.billingpct }}</mat-cell>
+        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="amountdue">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Amount Due</mat-header-cell>
+        <mat-cell *matCellDef="let receivable">{{ receivable.rate * (receivable.duration / 60) * receivable.billingpct | currency }}</mat-cell>
+        <mat-footer-cell id="totalOutstanding" *matFooterCellDef>{{ getTotalOutstanding() | currency }}</mat-footer-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="paid">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Paid</mat-header-cell>
+        <mat-cell *matCellDef="let receivable">
+          <button mat-button color="primary" id="markpaid_{{receivable.appointment_id}}" class="" (click)="onMarkPaid(receivable.appointment_id)">Mark Paid</button>
+        </mat-cell>
+        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      <mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></mat-footer-row>
+
+  </mat-table>
+</div>

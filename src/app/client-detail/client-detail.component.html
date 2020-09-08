@@ -1,4 +1,4 @@
-<form class="client-form" name="form" (ngSubmit)="clientForm.form.valid && saveClient()" #clientForm ="ngForm">
+<form name="form" (ngSubmit)="clientForm.form.valid && saveClient()" #clientForm ="ngForm">
     <div *ngIf="client" style="padding: 10px">
     <mat-form-field *ngIf="client.clientId" class="client-full-width">
       <input matInput placeholder="ID" value="{{client.clientId}}" />
