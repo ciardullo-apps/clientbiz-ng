@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ClientService } from '../services/client.service';
+import { ActivatedRoute } from '@angular/router';
 import { Client } from '../model/client';
+import { Appointment } from '../model/appointment';
+import { ClientService, UpdateAppointmentResponse } from '../services/client.service';
 
 @Component({
   selector: 'app-appointment-detail',
@@ -11,6 +13,7 @@ export class AppointmentDetailComponent implements OnInit {
 
   clients: Client[];
   topics: any[];
+  appointment: Appointment;
 
   constructor(
     private clientService: ClientService
@@ -19,6 +22,8 @@ export class AppointmentDetailComponent implements OnInit {
   ngOnInit() {
     this.getClients();
     this.getTopics();
+    this.appointment = new Appointment();
+    this.appointment.starttime = this.prevHourDate();
   }
 
   getClients(): void {
@@ -31,13 +36,22 @@ export class AppointmentDetailComponent implements OnInit {
   getTopics() : void {
     this.clientService.getTopics()
       .subscribe(topics => {
-        // Map {id: 1, name: 'foo'} to { 1: 'foo' }
-        this.topics = topics.map(t => {
-          let obj = {};
-          obj[t.id] = t.name;
-          return obj;
-        });
+        this.topics = topics
       });
   }
 
+  saveAppointment() : void {
+    this.clientService.saveAppointment(this.appointment)
+      .subscribe((response: UpdateAppointmentResponse) => {
+        console.log(`Appointment id ${response.appointmentId} saved`);
+      });
+  }
+
+  prevHourDate() : Date {
+    // Return to prior hour
+    var prevHour = new Date();
+    prevHour.setMinutes(0);
+    prevHour.setHours(prevHour.getHours() - 1);
+    return prevHour;
+  }
 }

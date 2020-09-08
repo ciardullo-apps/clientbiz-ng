@@ -1,1 +1,36 @@
-<p>appointment-detail works!</p>
+<form name="form" (ngSubmit)="appointmentForm.form.valid && saveAppointment()" #appointmentForm ="ngForm">
+  <div *ngIf="appointment" style="padding: 10px">
+    <mat-form-field class="client-full-width">
+      <mat-label>Client</mat-label>
+      <mat-select [(value)]="appointment.client_id" required>
+        <mat-option *ngFor="let client of clients" [value]="client.id">
+          {{client.firstname}} {{client.lastname}} ({{client.contactname}})
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="client-full-width">
+      <mat-label>Topic</mat-label>
+      <mat-select [(value)]="appointment.topic_id" required>
+        <mat-option *ngFor="let topic of topics" [value]="topic.id">
+          {{topic.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="client-full-width">
+        <input id="startTime" matInput type="datetime-local" name="startTime" [ngModel]="appointment.starttime | date:'yyyy-MM-ddTHH:mm'" placeholder="Start Time" required/>
+    </mat-form-field>
+    <mat-form-field class="client-full-width">
+        <input matInput placeholder="Duration" name="duration" type="number" [(ngModel)]="appointment.duration" required />
+    </mat-form-field>
+    <mat-form-field class="client-full-width">
+        <input matInput placeholder="Hourly rate" name="hourlyRate" type="number" [(ngModel)]="appointment.rate" required />
+    </mat-form-field>
+    <mat-form-field class="client-full-width">
+        <input matInput placeholder="Billing %" name="billingPct" type="number" [(ngModel)]="appointment.billingpct" required />
+    </mat-form-field>
+    <mat-form-field class="client-full-width">
+        <input matInput placeholder="Description" name="description" type="text" [(ngModel)]="appointment.description" required />
+    </mat-form-field>
+    <button mat-raised-button color="primary" id="submit">Submit</button>
+  </div>
+</form>

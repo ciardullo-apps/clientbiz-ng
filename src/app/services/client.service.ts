@@ -15,6 +15,13 @@ export class UpdateClientResponse {
   updatedClientId: number
 }
 
+export class UpdateAppointmentResponse {
+  appointmentId: number;
+  constructor( id: number) {
+    this.appointmentId = id;
+  }
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -59,4 +66,10 @@ export class ClientService {
     return this.http.get<any[]>(`${environment.apiAddress}/topics`);
   }
 
+  saveAppointment(appointment: Appointment) : Observable<UpdateAppointmentResponse> {
+    console.log('Saving appointment', appointment);
+    return this.http.post<UpdateAppointmentResponse>(`${environment.apiAddress}/saveAppointment`,
+      appointment
+    );
+  }
 }

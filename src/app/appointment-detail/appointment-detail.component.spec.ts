@@ -11,17 +11,23 @@ import { ClientService } from '../services/client.service';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { of } from 'rxjs';
 import { clientTestData } from '../test/mock-data/client-test-data';
+import { appointmentTestData } from '../test/mock-data/appointment-test-data';
 import { idValueTestData } from '../test/mock-data/id-value-test-data';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 
 describe('AppointmentDetailComponent', () => {
   let component: AppointmentDetailComponent;
   let fixture: ComponentFixture<AppointmentDetailComponent>;
   let clientServiceSpy: any;
+  // Randomizing the array index of appointmentTestData will use any and all test appointments
+  let testDataIndex = Math.floor((Math.random() * appointmentTestData.length));
 
   beforeEach(async(() => {
-    clientServiceSpy = jasmine.createSpyObj('ClientService', ['getClients', 'getTopics']);
+    clientServiceSpy = jasmine.createSpyObj('ClientService', ['getClients', 'getTopics', 'saveAppointment']);
     clientServiceSpy.getClients.and.returnValue( of(clientTestData));
     clientServiceSpy.getTopics.and.returnValue( of(idValueTestData));
+    clientServiceSpy.saveAppointment.and.returnValue( of({appointmentId: appointmentTestData[testDataIndex].id}));
 
     TestBed.configureTestingModule({
       declarations: [ AppointmentDetailComponent ],
@@ -30,6 +36,8 @@ describe('AppointmentDetailComponent', () => {
         HttpClientTestingModule,
         MatInputModule,
         MatFormFieldModule,
+        MatSelectModule,
+        MatOptionModule,
         BrowserAnimationsModule,
         FormsModule,
       ],
@@ -62,9 +70,21 @@ describe('AppointmentDetailComponent', () => {
 
   it('should initialize its topic list from service', () => {
     expect(clientServiceSpy.getTopics).toHaveBeenCalled();
-    expect(component.topics[0]).toEqual({1: 'foo'});
-    expect(component.topics[3]).toEqual({4: 'qux'});
+    expect(component.topics[0].id).toBe(1);
+    expect(component.topics[0].name).toBe('foo');
+    expect(component.topics[3].id).toBe(4);
+    expect(component.topics[3].name).toBe('qux');
     expect(component.topics.length).toBe(4);
   });
 
+  it('should call saveAppointment if there are no validation errors', () => {
+    spyOn(component, "saveAppointment").and.callThrough();
+    component.appointment = appointmentTestData[testDataIndex];
+    const submit = fixture.debugElement.nativeElement.querySelector('#submit');
+    submit.click();
+
+    expect(component.saveAppointment).toHaveBeenCalled();
+    expect(clientServiceSpy.saveAppointment).toHaveBeenCalled();
+    expect(component.appointment.id).toBe(appointmentTestData[testDataIndex].id);
+  });
 });

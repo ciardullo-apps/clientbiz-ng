@@ -3,7 +3,7 @@ export class Appointment {
   client_id: number;
   topic_id: number;
   topic_name: string;
-  starttime: string;
+  starttime: Date;
   duration: number;
   rate: number;
   billingpct: number;
