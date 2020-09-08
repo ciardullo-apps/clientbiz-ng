@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Appointment } from '../model/appointment';
 import { ActivatedRoute } from '@angular/router';
 import { ClientService } from '../services/client.service';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 
 @Component({

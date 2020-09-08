@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+  import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReceivablesComponent } from './receivables.component';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -9,7 +9,8 @@ import { MatTableModule } from '@angular/material/table';
 import { By } from '@angular/platform-browser';
 import { receivableTestData } from '../test/mock-data/receivable-test-data';
 import { of } from 'rxjs';
-import { MatDatepickerModule, MatNativeDateModule } from '@angular/material';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
 
 describe('ReceivablesComponent', () => {

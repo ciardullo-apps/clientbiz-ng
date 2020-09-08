@@ -23,9 +23,7 @@
               "src/assets"
             ],
             "styles": [
-              {
-                "input": "node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
-              },
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -53,11 +51,11 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "host": "myhost",
+            "host": "basilico",
             "port": 4200,
             "browserTarget": "clientbiz-ng:build",
-            "sslKey": "server.key",
-            "sslCert": "server.crt",
+            "sslKey": "/opt/certs/basilico.key",
+            "sslCert": "/opt/certs/basilico.crt",
             "ssl": true
           },
           "configurations": {
@@ -80,9 +78,7 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
-              {
-                "input": "node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
-              },
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css"
             ],
             "scripts": [],
