@@ -1,4 +1,4 @@
-  import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReceivablesComponent } from './receivables.component';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -12,17 +12,20 @@ import { of } from 'rxjs';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
 
 describe('ReceivablesComponent', () => {
   let component: ReceivablesComponent;
   let fixture: ComponentFixture<ReceivablesComponent>;
   let clientServiceSpy : any;
+  let toastrServiceSpy : any;
   const appointmentId = 1072;
 
   beforeEach(async(() => {
     clientServiceSpy = jasmine.createSpyObj('ClientService', ['getReceivables', 'markPaid']);
     clientServiceSpy.getReceivables.and.returnValue(of(receivableTestData));
     clientServiceSpy.markPaid.and.returnValue(of({ updatedAppointmentId: appointmentId }));
+    toastrServiceSpy = jasmine.createSpyObj('ToastrService', ['success']);
 
     TestBed.configureTestingModule({
       declarations: [ ReceivablesComponent ],
@@ -33,9 +36,11 @@ describe('ReceivablesComponent', () => {
         MatDatepickerModule,
         HttpClientTestingModule,
         FormsModule,
+        ToastrModule
       ],
       providers: [
         { provide: ClientService, useValue: clientServiceSpy },
+        { provide: ToastrService, useValue: toastrServiceSpy },
       ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     })
@@ -91,11 +96,12 @@ describe('ReceivablesComponent', () => {
   it('should invoke markPaid with the correct appointment id and date when the link is clicked', () => {
     spyOn(component, "onMarkPaid").and.callThrough();
     const link = fixture.debugElement.nativeElement.querySelector('#markpaid_' + appointmentId);
+    const paidDate = component.paidDatePicker.value.toISOString().slice(0, 10);
     link.click();
     // fixture.whenStable().then(() => {
     expect(component.onMarkPaid).toHaveBeenCalledWith(appointmentId);
-    expect(clientServiceSpy.markPaid).toHaveBeenCalledWith(appointmentId,
-      component.paidDatePicker.value.toISOString().slice(0, 10));
+    expect(clientServiceSpy.markPaid).toHaveBeenCalledWith(appointmentId, paidDate);
+    expect(toastrServiceSpy.success).toHaveBeenCalledWith(`Appointment ID ${appointmentId} marked paid on ${paidDate}`);
     // });
   });
 

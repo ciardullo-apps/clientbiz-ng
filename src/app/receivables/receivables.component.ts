@@ -3,6 +3,7 @@ import { Receivable } from '../model/receivable';
 import { ClientService, UpdatePaidDateResponse } from '../services/client.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-receivables',
@@ -16,7 +17,8 @@ export class ReceivablesComponent implements OnInit {
   dataSource: MatTableDataSource<Receivable>;
   paidDatePicker: FormControl;
 
-  constructor(private clientService: ClientService ) {
+  constructor(private clientService: ClientService,
+      private toastr: ToastrService) {
     const todayAtMidnight = new Date();
     todayAtMidnight.setHours(0, 0, 0, 0);
     this.paidDatePicker = new FormControl(todayAtMidnight);
@@ -24,6 +26,7 @@ export class ReceivablesComponent implements OnInit {
 
   ngOnInit() {
     this.getReceivables();
+
   }
 
   getReceivables() : void {
@@ -31,7 +34,7 @@ export class ReceivablesComponent implements OnInit {
       .subscribe(receivables => {
         this.receivables = receivables;
         this.dataSource = new MatTableDataSource<Receivable>(receivables);
-      })
+      });
   }
 
   getTotalOutstanding() : number {
@@ -51,6 +54,7 @@ export class ReceivablesComponent implements OnInit {
     this.clientService.markPaid(appointmentId, paidDate)
       .subscribe((resp: UpdatePaidDateResponse) => {
         console.log(resp);
+        this.toastr.success(`Appointment ID ${appointmentId} marked paid on ${paidDate}`);
       });
   }
 
