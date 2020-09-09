@@ -27,6 +27,7 @@ import { AppointmentsComponent } from './appointments/appointments.component';
 import { NavbarComponent, ProfileDialogComponent } from './navbar/navbar.component';
 import { ReceivablesComponent } from './receivables/receivables.component';
 import { AppointmentDetailComponent } from './appointment-detail/appointment-detail.component';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { AppointmentDetailComponent } from './appointment-detail/appointment-det
     MatSelectModule,
     MatOptionModule,
     BrowserAnimationsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ToastrModule.forRoot()
   ],
   providers: [],
   entryComponents: [
