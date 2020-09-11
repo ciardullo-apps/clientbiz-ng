@@ -8,6 +8,10 @@ form {
   width: 20%;
   display: inline-block;
 }
+.client-class {
+  width: 80%;
+  padding: 10px;
+}
 .client-full-width {
   width: 100%;
 }
@@ -15,5 +19,3 @@ form {
   width: 80%;
   padding: 10px;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -1,70 +1,72 @@
-<mat-table [dataSource]="dataSource" matSort>
+<div class="client-class">
+  <mat-table [dataSource]="dataSource" matSort>
 
-    <ng-container matColumnDef="id">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
-      <mat-cell *matCellDef="let client">{{ client.id }}</mat-cell>
-      <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-    </ng-container>
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+        <mat-cell *matCellDef="let client">{{ client.id }}</mat-cell>
+        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="firstname">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>First Name</mat-header-cell>
-      <mat-cell *matCellDef="let client">
-        <a routerLink="/client/{{ client.id }}">{{ client.firstname }}</a>
-      </mat-cell>
-      <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="lastname">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</mat-header-cell>
-      <mat-cell *matCellDef="let client">{{ client.lastname }}</mat-cell>
-      <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="contactname">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Contact</mat-header-cell>
-      <mat-cell *matCellDef="let client">{{ client.contactname }}</mat-cell>
-      <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="timezone">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Timezone</mat-header-cell>
-      <mat-cell *matCellDef="let client">{{ client.timezone }}</mat-cell>
-      <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="solicited">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Solicited</mat-header-cell>
+      <ng-container matColumnDef="firstname">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>First Name</mat-header-cell>
         <mat-cell *matCellDef="let client">
-          <mat-checkbox [checked]="client.solicited === 1"> </mat-checkbox>
+          <a routerLink="/client/{{ client.id }}">{{ client.firstname }}</a>
         </mat-cell>
-        <mat-footer-cell *matFooterCellDef>Totals</mat-footer-cell>
-    </ng-container>
+        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="numappts">
-      <mat-header-cell *matHeaderCellDef mat-sort-header># Appointments</mat-header-cell>
-      <mat-cell *matCellDef="let client">
-        <a
-          [routerLink]="['/appointments', client.id]">
-          {{ client.numappts }}
-        </a>
-      </mat-cell>
-      <mat-footer-cell id="totalAppts" *matFooterCellDef>{{ getTotalAppts() | number }}</mat-footer-cell>
-    </ng-container>
+      <ng-container matColumnDef="lastname">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</mat-header-cell>
+        <mat-cell *matCellDef="let client">{{ client.lastname }}</mat-cell>
+        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="revenue">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Revenue</mat-header-cell>
-      <mat-cell *matCellDef="let client">{{ client.revenue | currency }}</mat-cell>
-      <mat-footer-cell id="totalRevenue" *matFooterCellDef>{{ getTotalRevenue() | currency }}</mat-footer-cell>
-    </ng-container>
+      <ng-container matColumnDef="contactname">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Contact</mat-header-cell>
+        <mat-cell *matCellDef="let client">{{ client.contactname }}</mat-cell>
+        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="lastapptdate">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Last Appointment</mat-header-cell>
-      <mat-cell *matCellDef="let client">{{ client.lastapptdate }}</mat-cell>
-      <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-    </ng-container>
+      <ng-container matColumnDef="timezone">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Timezone</mat-header-cell>
+        <mat-cell *matCellDef="let client">{{ client.timezone }}</mat-cell>
+        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+      </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    <mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></mat-footer-row>
+      <ng-container matColumnDef="solicited">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Solicited</mat-header-cell>
+          <mat-cell *matCellDef="let client">
+            <mat-checkbox [checked]="client.solicited === 1"> </mat-checkbox>
+          </mat-cell>
+          <mat-footer-cell *matFooterCellDef>Totals</mat-footer-cell>
+      </ng-container>
 
-</mat-table>
+      <ng-container matColumnDef="numappts">
+        <mat-header-cell *matHeaderCellDef mat-sort-header># Appointments</mat-header-cell>
+        <mat-cell *matCellDef="let client">
+          <a
+            [routerLink]="['/appointments', client.id]">
+            {{ client.numappts }}
+          </a>
+        </mat-cell>
+        <mat-footer-cell id="totalAppts" *matFooterCellDef>{{ getTotalAppts() | number }}</mat-footer-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="revenue">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Revenue</mat-header-cell>
+        <mat-cell *matCellDef="let client">{{ client.revenue | currency }}</mat-cell>
+        <mat-footer-cell id="totalRevenue" *matFooterCellDef>{{ getTotalRevenue() | currency }}</mat-footer-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="lastapptdate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Last Appointment</mat-header-cell>
+        <mat-cell *matCellDef="let client">{{ client.lastapptdate }}</mat-cell>
+        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      <mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></mat-footer-row>
+
+  </mat-table>
+</div>
