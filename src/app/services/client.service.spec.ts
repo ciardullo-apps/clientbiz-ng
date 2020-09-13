@@ -5,6 +5,7 @@ import { ClientService, UpdatePaidDateResponse, UpdateClientResponse } from './c
 import { environment } from 'src/environments/environment';
 import { clientTestData } from '../test/mock-data/client-test-data';
 import { appointmentTestData } from '../test/mock-data/appointment-test-data';
+import { topicTestData } from '../test/mock-data/topics-test-data';
 
 describe('ClientService', () => {
   beforeEach(() => TestBed.configureTestingModule({
@@ -120,4 +121,42 @@ describe('ClientService', () => {
           req.flush({ updatedClientId: clientId });
         }
     ));
+
+    it('should retrieve list of topics from http get to backend',
+      inject([HttpTestingController, ClientService],
+        (httpMock: HttpTestingController, service: ClientService) => {
+          // Call the service
+          service.getTopics().subscribe(data => {
+            expect(data.length).toBe(3);
+            expect(data[0].id).toBe(1);
+            expect(data[1].id).toBe(2);
+            expect(data[2].id).toBe(3);
+          });
+
+          // Set expectations for the HttpClient mock
+          const req = httpMock.expectOne(`${environment.apiAddress}/topics`);
+          expect(req.request.method).toEqual('GET');
+
+          // Then set the fake data returned by the mock
+          req.flush(topicTestData);
+        }
+      ));
+
+      it('should retrieve one client\'s list of topics from http get to backend',
+        inject([HttpTestingController, ClientService],
+          (httpMock: HttpTestingController, service: ClientService) => {
+            const clientId = 101;
+            // Call the service
+            service.getSelectedTopics(clientId).subscribe(data => {
+              expect(data.length).toBe(2);
+            });
+
+            // Set expectations for the HttpClient mock
+            const req = httpMock.expectOne(`${environment.apiAddress}/topics/${clientId}`);
+            expect(req.request.method).toEqual('GET');
+
+            // Then set the fake data returned by the mock
+            req.flush(clientTestData.find(client => client.id === clientId).assigned_topics);
+          }
+        ));
 });

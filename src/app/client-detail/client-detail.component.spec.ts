@@ -72,6 +72,12 @@ describe('ClientDetailComponent', () => {
     expect(component.client.lastname).toBe('Doe');
     expect(component.client.numappts).toBe(1);
     expect(component.client.revenue).toBe(10.0);
+
+    expect(clientServiceSpy.getSelectedTopics).toHaveBeenCalled();
+    expect(component.client.assigned_topics.length).toBe(2);
+
+    expect(clientServiceSpy.getTopics).toHaveBeenCalled();
+    expect(component.topics).toEqual(topicTestData);
   });
 
   /*
