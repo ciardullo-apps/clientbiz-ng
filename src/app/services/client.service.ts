@@ -6,6 +6,7 @@ import { environment } from '../../environments/environment'
 import { Client } from '../model/client';
 import { Appointment } from '../model/appointment';
 import { Receivable } from '../model/receivable';
+import { Topic } from '../model/topic';
 
 export class UpdatePaidDateResponse {
   updatedAppointmentId: number
@@ -57,13 +58,14 @@ export class ClientService {
 
   saveClient(client: Client) : Observable<UpdateClientResponse> {
     console.log('Saving client 2', client.id);
+    delete client.clientId;
     return this.http.post<UpdateClientResponse>(`${environment.apiAddress}/saveClient`,
       client
     );
   }
 
-  getTopics(): Observable<any[]> {
-    return this.http.get<any[]>(`${environment.apiAddress}/topics`);
+  getTopics(): Observable<Topic[]> {
+    return this.http.get<Topic[]>(`${environment.apiAddress}/topics`);
   }
 
   saveAppointment(appointment: Appointment) : Observable<UpdateAppointmentResponse> {
@@ -72,4 +74,9 @@ export class ClientService {
       appointment
     );
   }
+
+  getSelectedTopics(clientId): Observable<number[]> {
+    return this.http.get<number[]>(`${environment.apiAddress}/topics/${clientId}`);
+  }
+
 }

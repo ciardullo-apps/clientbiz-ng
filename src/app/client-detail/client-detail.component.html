@@ -1,13 +1,21 @@
 <form name="form" (ngSubmit)="clientForm.form.valid && saveClient()" #clientForm ="ngForm">
     <div *ngIf="client" style="padding: 10px">
-    <mat-form-field *ngIf="client.clientId" class="client-full-width">
-      <input matInput placeholder="ID" value="{{client.clientId}}" />
+    <mat-form-field *ngIf="client.id" class="client-full-width">
+      <input matInput placeholder="ID" value="{{client.id}}" />
     </mat-form-field>
     <mat-form-field class="client-full-width">
         <input id="firstName" matInput name="firstname" placeholder="First name" [(ngModel)]="client.firstname" required />
     </mat-form-field>
     <mat-form-field class="client-full-width">
         <input matInput name="lastname" placeholder="Last name" [(ngModel)]="client.lastname" required />
+    </mat-form-field>
+    <mat-form-field class="client-full-width">
+      <mat-label>Topics</mat-label>
+      <mat-select [(value)]="client.assigned_topics" multiple required>
+        <mat-option *ngFor="let topic of topics" [value]="topic.id">
+          {{topic.name}}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
     <mat-form-field class="client-full-width">
         <input matInput name="contactname" placeholder="Contact name" [(ngModel)]="client.contactname" />
