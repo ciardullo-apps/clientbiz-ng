@@ -61,7 +61,7 @@ describe('AppointmentDetailComponent', () => {
 
   it('should initialize its client data from service', () => {
     expect(clientServiceSpy.getClients).toHaveBeenCalled();
-    expect(component.clients[0].clientId).toBe(101);
+    expect(component.clients[0].id).toBe(101);
     expect(component.clients[0].firstname).toBe('Jane');
     expect(component.clients[0].lastname).toBe('Doe');
     expect(component.clients[0].numappts).toBe(1);

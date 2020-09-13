@@ -1,9 +1,8 @@
 export class Client {
   id: number;
-  clientId: number;
   firstname: string;
   lastname: string;
-  assigned_topics: number[];
+  assigned_topics?: number[];
   contactname: string;
   city: string;
   state: string;

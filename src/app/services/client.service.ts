@@ -58,7 +58,6 @@ export class ClientService {
 
   saveClient(client: Client) : Observable<UpdateClientResponse> {
     console.log('Saving client 2', client.id);
-    delete client.clientId;
     return this.http.post<UpdateClientResponse>(`${environment.apiAddress}/saveClient`,
       client
     );

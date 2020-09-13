@@ -35,7 +35,6 @@ export class ClientDetailComponent implements OnInit {
       this.clientService.getClient(id)
         .subscribe(client => {
           this.client = client;
-          this.client.id = this.client.clientId;
           if(!this.client.firstcontact) {
             this.originalFirstContact = this.nextHourDate();
           } else {

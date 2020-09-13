@@ -3,7 +3,6 @@ import { Client } from "src/app/model/client";
 export const clientTestData : Client[] = [
   {
     id: 101,
-    clientId: 101,
     firstname: 'Jane',
     lastname: 'Doe',
     assigned_topics: [1, 2],
@@ -20,7 +19,6 @@ export const clientTestData : Client[] = [
   },
   {
     id: 102,
-    clientId: 102,
     firstname: 'Anne',
     lastname: 'Roe',
     assigned_topics: [1, 2],

@@ -12,17 +12,25 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { topicTestData } from '../test/mock-data/topics-test-data';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 
 describe('ClientDetailComponent', () => {
   let component: ClientDetailComponent;
   let fixture: ComponentFixture<ClientDetailComponent>;
   let clientId = 101;
   let clientServiceSpy: any;
+  let toastrServiceSpy : any;
 
   beforeEach(async(() => {
-    clientServiceSpy = jasmine.createSpyObj('ClientService', ['getClient', 'saveClient']);
-    clientServiceSpy.getClient.and.returnValue( of(clientTestData.find(client => client.clientId === clientId)));
+    clientServiceSpy = jasmine.createSpyObj('ClientService', ['getClient', 'saveClient', 'getTopics', 'getSelectedTopics']);
+    clientServiceSpy.getClient.and.returnValue( of(clientTestData.find(client => client.id === clientId)));
     clientServiceSpy.saveClient.and.returnValue(of({ updatedClientId: clientId }));
+    clientServiceSpy.getTopics.and.returnValue(of(topicTestData));
+    clientServiceSpy.getSelectedTopics.and.returnValue(of(clientTestData.find(client => client.id === clientId).assigned_topics));
+    toastrServiceSpy = jasmine.createSpyObj('ToastrService', ['success', 'error']);
 
     TestBed.configureTestingModule({
       declarations: [ ClientDetailComponent ],
@@ -33,9 +41,13 @@ describe('ClientDetailComponent', () => {
         MatFormFieldModule,
         BrowserAnimationsModule,
         FormsModule,
+        ToastrModule,
+        MatSelectModule,
+        MatOptionModule
       ],
       providers: [
         { provide: ClientService, useValue: clientServiceSpy },
+        { provide: ToastrService, useValue: toastrServiceSpy },
         { provide: ActivatedRoute, useValue: { snapshot: { paramMap: { get() { return clientId; } } } } }
       ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
@@ -55,7 +67,7 @@ describe('ClientDetailComponent', () => {
 
   it('should initialize its client data from service', () => {
     expect(clientServiceSpy.getClient).toHaveBeenCalled();
-    expect(component.client.clientId).toBe(101);
+    expect(component.client.id).toBe(101);
     expect(component.client.firstname).toBe('Jane');
     expect(component.client.lastname).toBe('Doe');
     expect(component.client.numappts).toBe(1);
@@ -127,6 +139,7 @@ describe('ClientDetailComponent', () => {
 
     expect(component.saveClient).toHaveBeenCalled();
     expect(clientServiceSpy.saveClient).toHaveBeenCalled();
+    expect(toastrServiceSpy.success).toHaveBeenCalledWith(`Client id ${clientId} saved`);
   });
 
 });

@@ -28,8 +28,8 @@ describe('ClientService', () => {
         // Call the service
         service.getClients().subscribe(data => {
           expect(data.length).toBe(2);
-          expect(data[0].clientId).toBe(101);
-          expect(data[1].clientId).toBe(102);
+          expect(data[0].id).toBe(101);
+          expect(data[1].id).toBe(102);
         });
 
         // Set expectations for the HttpClient mock
@@ -46,12 +46,12 @@ describe('ClientService', () => {
       (httpMock: HttpTestingController, service: ClientService) => {
         // Call the service
         service.getClient(102).subscribe(client => {
-          expect(client.clientId).toBe(102);
+          expect(client.id).toBe(102);
           expect(client.firstname).toBe('Anne');
         });
 
         // Set expectations for the HttpClient mock
-        const req = httpMock.expectOne(`${environment.apiAddress}/client/${clientTestData[1].clientId}`);
+        const req = httpMock.expectOne(`${environment.apiAddress}/client/${clientTestData[1].id}`);
         expect(req.request.method).toEqual('GET');
 
         // Then set the fake data returned by the mock
@@ -114,7 +114,7 @@ describe('ClientService', () => {
           // Set expectations for the HttpClient mock
           const req = httpMock.expectOne(`${environment.apiAddress}/saveClient`);
           expect(req.request.method).toEqual('POST');
-          expect(req.request.body.clientId).toBe(clientId);
+          expect(req.request.body.id).toBe(clientId);
 
           // Then set the fake data returned by the mock
           req.flush({ updatedClientId: clientId });
