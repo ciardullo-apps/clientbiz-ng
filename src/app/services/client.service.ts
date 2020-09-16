@@ -7,6 +7,7 @@ import { Client } from '../model/client';
 import { Appointment } from '../model/appointment';
 import { Receivable } from '../model/receivable';
 import { Topic } from '../model/topic';
+import { AuthService } from './auth.service';
 
 export class UpdatePaidDateResponse {
   updatedAppointmentId: number
@@ -18,7 +19,7 @@ export class UpdateClientResponse {
 
 export class UpdateAppointmentResponse {
   appointmentId: number;
-  constructor( id: number) {
+  constructor(id: number) {
     this.appointmentId = id;
   }
 }
@@ -28,23 +29,41 @@ export class UpdateAppointmentResponse {
 })
 export class ClientService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+    private authService: AuthService,
+) { }
 
   getClients(): Observable<Client[]> {
-    return this.http.get<Client[]>(`${environment.apiAddress}/client`);
+    return this.http.get<Client[]>(`${environment.apiAddress}/client`,
+    {
+      headers: this.authService.buildHeaders(),
+      responseType: 'json'
+    })
     // return of(CLIENTS);
   }
 
   getClient(id: number): Observable<Client> {
-    return this.http.get<Client>(`${environment.apiAddress}/client/${id}`);
+    return this.http.get<Client>(`${environment.apiAddress}/client/${id}`,
+      {
+        headers: this.authService.buildHeaders(),
+        responseType: 'json'
+      })
   }
 
   getAppointments(id: number): Observable<Appointment[]> {
-    return this.http.get<Appointment[]>(`${environment.apiAddress}/appointments/${id}`);
-  }
+    return this.http.get<Appointment[]>(`${environment.apiAddress}/appointments/${id}`,
+      {
+        headers: this.authService.buildHeaders(),
+        responseType: 'json'
+      })
+    }
 
   getReceivables(): Observable<Receivable[]> {
-    return this.http.get<Receivable[]>(`${environment.apiAddress}/receivables`);
+    return this.http.get<Receivable[]>(`${environment.apiAddress}/receivables`,
+      {
+        headers: this.authService.buildHeaders(),
+        responseType: 'json'
+      })
   }
 
   markPaid(appointmentId : number, paidDate: Date) : Observable<UpdatePaidDateResponse> {
@@ -53,13 +72,20 @@ export class ClientService {
     {
       id: (appointmentId),
       paid: paidDate
-    });
+    },
+    {
+      headers: this.authService.buildHeaders()
+    }
+  );
   }
 
   saveClient(client: Client) : Observable<UpdateClientResponse> {
     console.log('Saving client 2', client.id);
     return this.http.post<UpdateClientResponse>(`${environment.apiAddress}/saveClient`,
-      client
+      client,
+      {
+        headers: this.authService.buildHeaders()
+      }
     );
   }
 
@@ -70,12 +96,19 @@ export class ClientService {
   saveAppointment(appointment: Appointment) : Observable<UpdateAppointmentResponse> {
     console.log('Saving appointment', appointment);
     return this.http.post<UpdateAppointmentResponse>(`${environment.apiAddress}/saveAppointment`,
-      appointment
+      appointment,
+      {
+        headers: this.authService.buildHeaders()
+      }
     );
   }
 
   getSelectedTopics(clientId): Observable<number[]> {
-    return this.http.get<number[]>(`${environment.apiAddress}/topics/${clientId}`);
+    return this.http.get<number[]>(`${environment.apiAddress}/topics/${clientId}`,
+      {
+        headers: this.authService.buildHeaders(),
+        responseType: 'json'
+      })
   }
 
 }

@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { User } from '../model/user';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-navbar',
@@ -13,6 +14,7 @@ export class NavbarComponent implements OnInit {
   constructor(
     private authService: AuthService,
     public dialog: MatDialog,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -23,7 +25,14 @@ export class NavbarComponent implements OnInit {
   }
 
   loginWithGoogle() : void {
-    this.authService.loginWithGoogle();
+    this.authService.loginWithGoogle()
+      .subscribe(resp => {
+        if(resp) {
+          if (this.authService.getUserInfo()) {
+            this.toastr.success(`Welcome ${this.authService.getUserInfo().firstName}` )
+          }
+        }
+      })
   }
 
   logout() : void {

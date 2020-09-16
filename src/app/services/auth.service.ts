@@ -13,16 +13,16 @@ declare const gapi: any;
 export class AuthService {
 
   private userInfo: User;
-  private loggedIn: BehaviorSubject<boolean>;
 
   constructor(
     private http: HttpClient,
   ) {
-    this.loggedIn = new BehaviorSubject<boolean>(this.getToken() ? true : false);
     this.getUserProfile();
   }
 
   loginWithGoogle() {
+    let loggedIn = new BehaviorSubject<Boolean>(false)
+
     this.googleLogin().subscribe((userInfo : User) => {
       console.log(userInfo);
       this.http.post(`${environment.apiAddress}/auth/authorize`, userInfo)
@@ -30,14 +30,13 @@ export class AuthService {
         this.userInfo = userInfo;
         console.log('Successful login', resp.token);
         this.saveToken(resp.token)
-        this.loggedIn.next(true);
-        // this.toastr.success(resp && resp.user && resp.user.name ? `Welcome ${resp.user.name}` : 'Logged in!');
+        loggedIn.next(true)
       }, (errorResp) => {
         console.log('Error', errorResp);
-        this.loggedIn.next(undefined);
-        // errorResp.error ? this.toastr.error(errorResp.error.errorMessage) : this.toastr.error('An unknown error has occured.');
+        loggedIn.next(false);
       });
     });
+    return loggedIn
   }
 
   private googleLogin () {
@@ -84,9 +83,7 @@ export class AuthService {
     .subscribe((userInfo: User) => {
       console.log('User profile', userInfo);
       this.userInfo = userInfo;
-      this.loggedIn.next(true);
     }, (errorResp) => {
-      this.loggedIn.next(undefined);
       console.log('Error', errorResp);
     });
   }
