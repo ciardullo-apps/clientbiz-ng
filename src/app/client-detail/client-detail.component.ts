@@ -73,6 +73,7 @@ export class ClientDetailComponent implements OnInit {
     this.clientService.saveClient(this.client)
       .subscribe(
         (response: UpdateClientResponse) => {
+          this.client.id = response.updatedClientId;
           console.log(`Client id ${response.updatedClientId} saved`);
           this.toastr.success(`Client id ${response.updatedClientId} saved`);
         },
