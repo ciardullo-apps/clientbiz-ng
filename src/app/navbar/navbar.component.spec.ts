@@ -9,13 +9,17 @@ import { MatDialogModule, MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angu
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
 
 describe('NavbarComponent', () => {
   let component: NavbarComponent;
   let fixture: ComponentFixture<NavbarComponent>;
   let dialog: MatDialog;
+  let toastrServiceSpy : any;
 
   beforeEach(async(() => {
+    toastrServiceSpy = jasmine.createSpyObj('ToastrService', ['success']);
+
     TestBed.configureTestingModule({
       declarations: [
         NavbarComponent,
@@ -27,7 +31,8 @@ describe('NavbarComponent', () => {
         RouterTestingModule,
         HttpClientTestingModule,
         MatDialogModule,
-        NoopAnimationsModule
+        NoopAnimationsModule,
+        ToastrModule
       ],
       providers: [
         {
@@ -37,7 +42,9 @@ describe('NavbarComponent', () => {
         {
           provide: MAT_DIALOG_DATA,
           useValue: { id: 143587972, firstName: 'foo', lastName: 'bar', email: 'biz', photo: 'baz'}
-      }],
+        },
+        { provide: ToastrService, useValue: toastrServiceSpy },
+      ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     })
     .overrideModule(BrowserDynamicTestingModule, {
@@ -67,7 +74,7 @@ describe('NavbarComponent', () => {
     // set the value to return when the `getValue` spy is called.
     authServiceSpy.isLoggedIn.and.returnValue(true);
 
-    component = new NavbarComponent(authServiceSpy, dialog);
+    component = new NavbarComponent(authServiceSpy, dialog, toastrServiceSpy);
 
     expect(component.isLoggedIn())
       .toBe(true, 'service returned true');

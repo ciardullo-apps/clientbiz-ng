@@ -30,8 +30,8 @@ export class UpdateAppointmentResponse {
 export class ClientService {
 
   constructor(private http: HttpClient,
-    private authService: AuthService,
-) { }
+    private authService: AuthService) {
+    }
 
   getClients(): Observable<Client[]> {
     return this.http.get<Client[]>(`${environment.apiAddress}/client`,

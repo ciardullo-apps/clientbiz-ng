@@ -1,4 +1,4 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { TestBed, inject, async } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { ClientService, UpdatePaidDateResponse, UpdateClientResponse } from './client.service';
@@ -6,12 +6,22 @@ import { environment } from 'src/environments/environment';
 import { clientTestData } from '../test/mock-data/client-test-data';
 import { appointmentTestData } from '../test/mock-data/appointment-test-data';
 import { topicTestData } from '../test/mock-data/topics-test-data';
+import { AuthService } from './auth.service';
 
 describe('ClientService', () => {
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [
-        HttpClientTestingModule,
+  let authServiceSpy : any;
+
+  beforeEach(async(() => {
+    authServiceSpy = jasmine.createSpyObj('AuthService', ['buildHeaders']);
+
+    TestBed.configureTestingModule({
+      imports: [
+          HttpClientTestingModule,
       ],
+      providers: [
+        { provide: AuthService, useValue: authServiceSpy }
+      ]
+    })
   }));
 
   afterEach(inject([HttpTestingController], (httpMock: HttpTestingController) => {
