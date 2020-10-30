@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Client } from '../model/client';
 import { Appointment } from '../model/appointment';
 import { ClientService, UpdateAppointmentResponse } from '../services/client.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-appointment-detail',
@@ -16,8 +17,9 @@ export class AppointmentDetailComponent implements OnInit {
   appointment: Appointment;
 
   constructor(
-    private clientService: ClientService
-  ) { }
+    private clientService: ClientService,
+    private toastr: ToastrService) {
+    }
 
   ngOnInit() {
     this.getClients();
@@ -44,6 +46,7 @@ export class AppointmentDetailComponent implements OnInit {
     this.clientService.saveAppointment(this.appointment)
       .subscribe((response: UpdateAppointmentResponse) => {
         console.log(`Appointment id ${response.appointmentId} saved`);
+        this.toastr.success(`Appointment id ${response.appointmentId} saved`);
       });
   }
 
@@ -54,4 +57,5 @@ export class AppointmentDetailComponent implements OnInit {
     prevHour.setHours(prevHour.getHours() - 1);
     return prevHour;
   }
+
 }

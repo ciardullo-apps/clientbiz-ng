@@ -15,11 +15,14 @@ import { appointmentTestData } from '../test/mock-data/appointment-test-data';
 import { idValueTestData } from '../test/mock-data/id-value-test-data';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { start } from 'repl';
 
 describe('AppointmentDetailComponent', () => {
   let component: AppointmentDetailComponent;
   let fixture: ComponentFixture<AppointmentDetailComponent>;
   let clientServiceSpy: any;
+  let toastrServiceSpy : any;
   // Randomizing the array index of appointmentTestData will use any and all test appointments
   let testDataIndex = Math.floor((Math.random() * appointmentTestData.length));
 
@@ -28,6 +31,7 @@ describe('AppointmentDetailComponent', () => {
     clientServiceSpy.getClients.and.returnValue( of(clientTestData));
     clientServiceSpy.getTopics.and.returnValue( of(idValueTestData));
     clientServiceSpy.saveAppointment.and.returnValue( of({appointmentId: appointmentTestData[testDataIndex].id}));
+    toastrServiceSpy = jasmine.createSpyObj('ToastrService', ['success']);
 
     TestBed.configureTestingModule({
       declarations: [ AppointmentDetailComponent ],
@@ -40,9 +44,11 @@ describe('AppointmentDetailComponent', () => {
         MatOptionModule,
         BrowserAnimationsModule,
         FormsModule,
+        ToastrModule
       ],
       providers: [
-        { provide: ClientService, useValue: clientServiceSpy }
+        { provide: ClientService, useValue: clientServiceSpy },
+        { provide: ToastrService, useValue: toastrServiceSpy}
       ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     })
@@ -86,5 +92,6 @@ describe('AppointmentDetailComponent', () => {
     expect(component.saveAppointment).toHaveBeenCalled();
     expect(clientServiceSpy.saveAppointment).toHaveBeenCalled();
     expect(component.appointment.id).toBe(appointmentTestData[testDataIndex].id);
+    expect(toastrServiceSpy.success).toHaveBeenCalledWith(`Appointment id ${component.appointment.id} saved`);
   });
 });

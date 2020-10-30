@@ -17,7 +17,7 @@
       </mat-select>
     </mat-form-field>
     <mat-form-field class="client-full-width">
-        <input id="startTime" matInput type="datetime-local" name="startTime" [ngModel]="appointment.starttime | date:'yyyy-MM-ddTHH:mm'" placeholder="Start Time" required/>
+        <input id="startTime" matInput type="datetime-local" name="startTime" [ngModel]="appointment.starttime | date:'yyyy-MM-ddTHH:mm'" (ngModelChange)="appointment.starttime = $event" placeholder="Start Time" required/>
     </mat-form-field>
     <mat-form-field class="client-full-width">
         <input matInput placeholder="Duration" name="duration" type="number" [(ngModel)]="appointment.duration" required />
