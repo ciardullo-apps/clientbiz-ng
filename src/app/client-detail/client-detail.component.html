@@ -29,7 +29,7 @@
     <mat-form-field class="client-full-width">
         <input matInput placeholder="Timezone" name="timezone" [(ngModel)]="client.timezone" required />
     </mat-form-field>
-    <mat-checkbox  id="solicited" class="client-full-width" name="solicited" [(ngModel)]="client.solicited" [checked]="client.solicited===1" labelPosition="before" (click)="toggleFirstContact()">
+    <mat-checkbox  id="solicited" class="client-full-width" name="solicited" [(ngModel)]="client.solicited" [checked]="client.solicited===true" labelPosition="before" (click)="toggleFirstContact()">
       <mat-label>Solicited</mat-label>
     </mat-checkbox>
     <mat-form-field class="client-full-width">
