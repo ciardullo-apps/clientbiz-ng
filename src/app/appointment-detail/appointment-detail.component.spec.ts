@@ -74,15 +74,6 @@ describe('AppointmentDetailComponent', () => {
     expect(component.clients[0].revenue).toBe(10.0);
   });
 
-  it('should initialize its topic list from service', () => {
-    expect(clientServiceSpy.getTopics).toHaveBeenCalled();
-    expect(component.topics[0].id).toBe(1);
-    expect(component.topics[0].name).toBe('foo');
-    expect(component.topics[3].id).toBe(4);
-    expect(component.topics[3].name).toBe('qux');
-    expect(component.topics.length).toBe(4);
-  });
-
   it('should call saveAppointment if there are no validation errors', () => {
     spyOn(component, "saveAppointment").and.callThrough();
     component.appointment = appointmentTestData[testDataIndex];

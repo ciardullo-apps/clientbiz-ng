@@ -4,6 +4,7 @@ import { Client } from '../model/client';
 import { Appointment } from '../model/appointment';
 import { ClientService, UpdateAppointmentResponse } from '../services/client.service';
 import { ToastrService } from 'ngx-toastr';
+import { Topic } from '../model/topic';
 
 @Component({
   selector: 'app-appointment-detail',
@@ -13,7 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 export class AppointmentDetailComponent implements OnInit {
 
   clients: Client[];
-  topics: any[];
+  topics: Topic[];
   appointment: Appointment;
 
   constructor(
@@ -23,7 +24,6 @@ export class AppointmentDetailComponent implements OnInit {
 
   ngOnInit() {
     this.getClients();
-    this.getTopics();
     this.appointment = new Appointment();
     this.appointment.starttime = this.prevHourDate();
   }
@@ -35,18 +35,23 @@ export class AppointmentDetailComponent implements OnInit {
       })
   }
 
-  getTopics() : void {
-    this.clientService.getTopics()
-      .subscribe(topics => {
-        this.topics = topics
-      });
-  }
-
   saveAppointment() : void {
     this.clientService.saveAppointment(this.appointment)
       .subscribe((response: UpdateAppointmentResponse) => {
         console.log(`Appointment id ${response.appointmentId} saved`);
         this.toastr.success(`Appointment id ${response.appointmentId} saved`);
+      });
+  }
+
+  onClientChange(clientId: number) : void {
+    this.clientService.getSelectedTopics(clientId)
+      .subscribe(topics => {
+        this.topics = topics
+        if(this.topics.length == 1) {
+          this.appointment.topic_id = topics[0].id
+        } else {
+          this.appointment.topic_id = null
+        }
       });
   }
 

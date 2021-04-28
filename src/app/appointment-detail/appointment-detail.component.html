@@ -2,7 +2,7 @@
   <div *ngIf="appointment" style="padding: 10px">
     <mat-form-field class="client-full-width">
       <mat-label>Client</mat-label>
-      <mat-select [(value)]="appointment.client_id" required>
+      <mat-select [(value)]="appointment.client_id" required (selectionChange)="onClientChange($event.value)" >
         <mat-option *ngFor="let client of clients" [value]="client.id">
           {{client.firstname}} {{client.lastname}} ({{client.contactname}})
         </mat-option>

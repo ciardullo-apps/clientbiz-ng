@@ -103,8 +103,8 @@ export class ClientService {
     );
   }
 
-  getSelectedTopics(clientId): Observable<number[]> {
-    return this.http.get<number[]>(`${environment.apiAddress}/topics/${clientId}`,
+  getSelectedTopics(clientId: number): Observable<Topic[]> {
+    return this.http.get<Topic[]>(`${environment.apiAddress}/topics/${clientId}`,
       {
         headers: this.authService.buildHeaders(),
         responseType: 'json'
