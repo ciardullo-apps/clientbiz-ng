@@ -12,7 +12,7 @@
     <mat-form-field class="client-full-width">
       <mat-label>Topics</mat-label>
       <mat-select [(value)]="client.assigned_topics" multiple required>
-        <mat-option *ngFor="let topic of topics" [value]="topic.id">
+        <mat-option id="topic_{{topic.id}}" *ngFor="let topic of topics" [value]="topic.id">
           {{topic.name}}
         </mat-option>
       </mat-select>

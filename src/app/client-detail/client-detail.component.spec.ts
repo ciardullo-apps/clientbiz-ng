@@ -29,7 +29,7 @@ describe('ClientDetailComponent', () => {
     clientServiceSpy.getClient.and.returnValue( of(clientTestData.find(client => client.id === clientId)));
     clientServiceSpy.saveClient.and.returnValue(of({ updatedClientId: clientId }));
     clientServiceSpy.getTopics.and.returnValue(of(topicTestData));
-    clientServiceSpy.getSelectedTopics.and.returnValue(of(clientTestData.find(client => client.id === clientId).assigned_topics));
+    clientServiceSpy.getSelectedTopics.and.returnValue(of(topicTestData.filter(x => clientTestData.find(client => client.id === clientId).assigned_topics.indexOf(x.id) !== -1)))
     toastrServiceSpy = jasmine.createSpyObj('ToastrService', ['success', 'error']);
 
     TestBed.configureTestingModule({

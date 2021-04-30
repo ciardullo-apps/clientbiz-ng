@@ -42,7 +42,7 @@ export class ClientDetailComponent implements OnInit {
           }
           this.clientService.getSelectedTopics(id)
             .subscribe(clientTopics => {
-              this.client.assigned_topics = clientTopics.map(a => a['topic_id']);
+              this.client.assigned_topics = clientTopics.map(a => a['id']);
           })
         });
     } else {
