@@ -14,7 +14,8 @@ const routes: Routes = [
   { path: 'client',  component: ClientDetailComponent },
   { path: 'appointments/:id', component: AppointmentsComponent },
   { path: 'receivables', component: ReceivablesComponent },
-  { path: 'appointment',  component: AppointmentDetailComponent }
+  { path: 'appointment',  component: AppointmentDetailComponent },
+  { path: 'reports', loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule) }
   // { path: '', redirectTo: '/clients', pathMatch: 'full' },
 ];
 
