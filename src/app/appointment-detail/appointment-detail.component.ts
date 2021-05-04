@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Client } from '../model/client';
 import { Appointment } from '../model/appointment';
 import { ClientService, UpdateAppointmentResponse } from '../services/client.service';

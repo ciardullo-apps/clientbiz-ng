@@ -1,10 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReceivablesComponent } from './receivables.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ClientService } from '../services/client.service';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { By } from '@angular/platform-browser';
 import { receivableTestData } from '../test/mock-data/receivable-test-data';
@@ -13,44 +12,55 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('ReceivablesComponent', () => {
   let component: ReceivablesComponent;
   let fixture: ComponentFixture<ReceivablesComponent>;
-  let clientServiceSpy : any;
-  let toastrServiceSpy : any;
+  let clientService: ClientService;
+  let toastrService: ToastrService;
   const appointmentId = 1072;
 
-  beforeEach(async(() => {
-    clientServiceSpy = jasmine.createSpyObj('ClientService', ['getReceivables', 'markPaid']);
-    clientServiceSpy.getReceivables.and.returnValue(of(receivableTestData));
-    clientServiceSpy.markPaid.and.returnValue(of({ updatedAppointmentId: appointmentId }));
-    toastrServiceSpy = jasmine.createSpyObj('ToastrService', ['success']);
-
+  beforeEach(async() => {
     TestBed.configureTestingModule({
       declarations: [ ReceivablesComponent ],
       imports: [
         RouterTestingModule,
+        HttpClientTestingModule,
+        MatInputModule,
+        MatFormFieldModule,
+        BrowserAnimationsModule,
+        FormsModule,
         MatTableModule,
         MatNativeDateModule,
         MatDatepickerModule,
-        HttpClientTestingModule,
-        FormsModule,
-        ToastrModule
+        ToastrModule.forRoot({
+          positionClass: 'toast-top-right'
+        }),
       ],
       providers: [
-        { provide: ClientService, useValue: clientServiceSpy },
-        { provide: ToastrService, useValue: toastrServiceSpy },
-      ],
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+        ClientService, ToastrService
+      ]
     })
-    .compileComponents();
-  }));
+    .compileComponents()
+  })
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ReceivablesComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    fixture = TestBed.createComponent(ReceivablesComponent)
+    component = fixture.componentInstance
+    clientService = TestBed.inject(ClientService)
+    toastrService = TestBed.inject(ToastrService)
+
+    spyOn(clientService, 'getReceivables').and.returnValue(of(receivableTestData));
+    spyOn(clientService, 'markPaid').and.returnValue(of({ updatedAppointmentId: appointmentId }));
+
+    spyOn(toastrService, 'success')
+    spyOn(toastrService, 'error')
+
+    component.ngOnInit()
+    fixture.detectChanges()
   });
 
   it('should create', () => {
@@ -58,7 +68,7 @@ describe('ReceivablesComponent', () => {
   });
 
   it('should initialize its list of receivables from service', () => {
-    expect(clientServiceSpy.getReceivables).toHaveBeenCalled();
+    expect(clientService.getReceivables).toHaveBeenCalled();
     expect(component.receivables.length).toBe(4);
     expect(component.getTotalOutstanding()).toBe(62.50);
   });
@@ -100,8 +110,8 @@ describe('ReceivablesComponent', () => {
     link.click();
     // fixture.whenStable().then(() => {
     expect(component.onMarkPaid).toHaveBeenCalledWith(appointmentId);
-    expect(clientServiceSpy.markPaid).toHaveBeenCalledWith(appointmentId, paidDate);
-    expect(toastrServiceSpy.success).toHaveBeenCalledWith(`Appointment ID ${appointmentId} marked paid on ${paidDate}`);
+    expect(clientService.markPaid).toHaveBeenCalledWith(appointmentId, paidDate);
+    expect(toastrService.success).toHaveBeenCalledWith(`Appointment ID ${appointmentId} marked paid on ${paidDate}`);
     // });
   });
 

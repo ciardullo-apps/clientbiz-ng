@@ -1,7 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NavbarComponent, ProfileDialogComponent } from './navbar.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -10,16 +9,17 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { AuthService } from '../services/auth.service';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 describe('NavbarComponent', () => {
   let component: NavbarComponent;
   let fixture: ComponentFixture<NavbarComponent>;
   let dialog: MatDialog;
-  let toastrServiceSpy : any;
+  let authService: AuthService
+  let toastrService : ToastrService;
 
-  beforeEach(async(() => {
-    toastrServiceSpy = jasmine.createSpyObj('ToastrService', ['success']);
-
+  beforeEach(async () => {
     TestBed.configureTestingModule({
       declarations: [
         NavbarComponent,
@@ -31,10 +31,15 @@ describe('NavbarComponent', () => {
         RouterTestingModule,
         HttpClientTestingModule,
         MatDialogModule,
+        MatToolbarModule,
         NoopAnimationsModule,
-        ToastrModule
+        ToastrModule.forRoot({
+          positionClass: 'toast-top-right'
+        })
       ],
       providers: [
+        ToastrService,
+        AuthService,
         {
           provide: MatDialogRef,
           useValue: {}
@@ -42,10 +47,8 @@ describe('NavbarComponent', () => {
         {
           provide: MAT_DIALOG_DATA,
           useValue: { id: 143587972, firstName: 'foo', lastName: 'bar', email: 'biz', photo: 'baz'}
-        },
-        { provide: ToastrService, useValue: toastrServiceSpy },
-      ],
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+        }
+      ]
     })
     .overrideModule(BrowserDynamicTestingModule, {
         set: {
@@ -53,51 +56,92 @@ describe('NavbarComponent', () => {
         }
       }
     )
-    .compileComponents();
-  }));
-
+    .compileComponents()
+  })
+  
   beforeEach(() => {
-    fixture = TestBed.createComponent(NavbarComponent);
-    component = fixture.componentInstance;
-    dialog = TestBed.get(MatDialog);
-    fixture.detectChanges();
+    fixture = TestBed.createComponent(NavbarComponent)
+    fixture.autoDetectChanges(true)
+    component = fixture.componentInstance
+
+    authService = TestBed.inject(AuthService)
+    toastrService = TestBed.inject(ToastrService)
+
+    spyOn(toastrService, 'success')
+    spyOn(toastrService, 'error')
+
+    dialog = TestBed.inject(MatDialog)
+
+    component.ngOnInit()
+    fixture.detectChanges()
   });
 
-  // it('should create', () => {
-  //   expect(component).toBeTruthy();
-  // });
-
-  it('#isLoggedIn should return stubbed value from a spy', () => {
-    const authServiceSpy =
-      jasmine.createSpyObj('AuthService', ['isLoggedIn']);
-
-    // set the value to return when the `getValue` spy is called.
-    authServiceSpy.isLoggedIn.and.returnValue(true);
-
-    component = new NavbarComponent(authServiceSpy, dialog, toastrServiceSpy);
-
-    expect(component.isLoggedIn())
-      .toBe(true, 'service returned true');
-    expect(authServiceSpy.isLoggedIn.calls.count())
-      .toBe(1, 'spy method was called once');
-    expect(authServiceSpy.isLoggedIn.calls.mostRecent().returnValue)
-      .toBe(true);
+  it('should create', () => {
+    expect(component).toBeTruthy();
   });
 
-  // it('#openUserProfile should display the user data from auth service', () => {
-  //   const authServiceSpy =
-  //     jasmine.createSpyObj('AuthService', ['getUserInfo']);
-  //
-  //   // set the value to return when the `getValue` spy is called.
-  //   authServiceSpy.getUserInfo.and.returnValue({ id: 1234567890, firstName: 'foo', lastName: 'bar', email: 'biz', photo: 'baz'});
-  //
-  //   component = new NavbarComponent(authServiceSpy, dialog);
-  //
-  //   component.openUserProfile();
-  //   console.log(component.dialog.openDialogs[0].componentInstance.userInfo);
-  //   expect(component.dialog.openDialogs[0]._containerInstance._config)
-  //     .toBeDefined();
-  //   // expect(component.dialog.config.data)
-  //   //   .toBeDefined();
-  // })
+  it('#isLoggedIn should call AuthService', () => {
+    spyOn(authService, 'isLoggedIn').and.returnValue(true)
+    fixture.detectChanges()
+    expect(authService.isLoggedIn).toHaveBeenCalled()
+  });
+
+  it('should not display the nav menu when isLoggedIn returns false', () => {
+    spyOn(authService, 'isLoggedIn').and.returnValue(false)
+    fixture.detectChanges()
+    const userMenu = fixture.nativeElement.parentNode.querySelector('#userMenu')
+    expect(userMenu).toBeTruthy()
+    const navMenu = fixture.nativeElement.parentNode.querySelector('#navMenu')
+    expect(navMenu).toBeFalsy()
+  })
+
+  it('should display the login menu item but not profile and logout menu items when isLoggedIn returns false', () => {
+    spyOn(authService, 'isLoggedIn').and.returnValue(false)
+    fixture.detectChanges()
+    const menuButton = fixture.nativeElement.querySelector('#userMenu')
+    menuButton.click()
+    const googleBtn = fixture.nativeElement.parentNode.querySelector('#googleBtn')
+    expect(googleBtn).toBeTruthy();
+    const btnProfile = fixture.nativeElement.parentNode.querySelector('#btnProfile')
+    expect(btnProfile).toBeFalsy();
+    const btnLogout = fixture.nativeElement.parentNode.querySelector('#btnLogout')
+    expect(btnLogout).toBeFalsy();
+  })
+
+  it('should show profile and logout menu items but not login menu item when isLoggedIn returns true', () => {
+    spyOn(authService, 'isLoggedIn').and.returnValue(true)
+    fixture.detectChanges()
+    const menuButton = fixture.nativeElement.querySelector('#userMenu')
+    menuButton.click()
+    const googleBtn = fixture.nativeElement.parentNode.querySelector('#googleBtn')
+    expect(googleBtn).toBeFalsy();
+    const btnProfile = fixture.nativeElement.parentNode.querySelector('#btnProfile')
+    expect(btnProfile).toBeTruthy();
+    const btnLogout = fixture.nativeElement.parentNode.querySelector('#btnLogout')
+    expect(btnLogout).toBeTruthy();
+  })
+
+  it('#openUserProfile should display the user info from auth service when the profile menu item is clicked', () => {
+    // leave this comment, as an example of creating spies
+    // const authServiceSpy =
+    //   jasmine.createSpyObj('AuthService', ['getUserInfo']);
+  
+    spyOn(authService, 'isLoggedIn').and.returnValue(true)
+    spyOn(authService, 'getUserInfo').and.returnValue({ id: 1234567890, firstName: 'foo', lastName: 'bar', email: 'biz', photo: 'baz'})
+    fixture.detectChanges()
+
+    const menuButton = fixture.nativeElement.querySelector('#userMenu')
+    menuButton.click()
+    // fixture.detectChanges()
+    const btnProfile = fixture.nativeElement.parentNode.querySelector('#btnProfile')
+    btnProfile.click()
+    // fixture.detectChanges()
+    expect(authService.getUserInfo).toHaveBeenCalled()
+    expect(component.dialog.openDialogs[0]._containerInstance._config).toBeDefined()
+    expect(component.dialog.openDialogs[0].componentInstance.userInfo.id).toBe(1234567890)
+    expect(component.dialog.openDialogs[0].componentInstance.userInfo.firstName).toBe('foo')
+    expect(component.dialog.openDialogs[0].componentInstance.userInfo.lastName).toBe('bar')
+    expect(component.dialog.openDialogs[0].componentInstance.userInfo.email).toBe('biz')
+    expect(component.dialog.openDialogs[0].componentInstance.userInfo.photo).toBe('baz')
+  })
 });

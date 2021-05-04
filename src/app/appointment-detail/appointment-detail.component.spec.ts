@@ -1,5 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppointmentDetailComponent } from './appointment-detail.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -8,7 +7,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { ClientService } from '../services/client.service';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { of } from 'rxjs';
 import { clientTestData } from '../test/mock-data/client-test-data';
 import { appointmentTestData } from '../test/mock-data/appointment-test-data';
@@ -16,23 +14,17 @@ import { idValueTestData } from '../test/mock-data/id-value-test-data';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
-import { start } from 'repl';
 
 describe('AppointmentDetailComponent', () => {
   let component: AppointmentDetailComponent;
   let fixture: ComponentFixture<AppointmentDetailComponent>;
-  let clientServiceSpy: any;
-  let toastrServiceSpy : any;
+  let clientService: ClientService;
+  let toastrService: ToastrService;
+
   // Randomizing the array index of appointmentTestData will use any and all test appointments
   let testDataIndex = Math.floor((Math.random() * appointmentTestData.length));
 
-  beforeEach(async(() => {
-    clientServiceSpy = jasmine.createSpyObj('ClientService', ['getClients', 'getTopics', 'saveAppointment']);
-    clientServiceSpy.getClients.and.returnValue( of(clientTestData));
-    clientServiceSpy.getTopics.and.returnValue( of(idValueTestData));
-    clientServiceSpy.saveAppointment.and.returnValue( of({appointmentId: appointmentTestData[testDataIndex].id}));
-    toastrServiceSpy = jasmine.createSpyObj('ToastrService', ['success']);
-
+  beforeEach(async () => {
     TestBed.configureTestingModule({
       declarations: [ AppointmentDetailComponent ],
       imports: [
@@ -44,21 +36,33 @@ describe('AppointmentDetailComponent', () => {
         MatOptionModule,
         BrowserAnimationsModule,
         FormsModule,
-        ToastrModule
+        ToastrModule.forRoot({
+          positionClass: 'toast-top-right'
+        })
       ],
       providers: [
-        { provide: ClientService, useValue: clientServiceSpy },
-        { provide: ToastrService, useValue: toastrServiceSpy}
-      ],
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+        ClientService, ToastrService
+      ]
     })
     .compileComponents();
-  }));
+  })
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AppointmentDetailComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    fixture = TestBed.createComponent(AppointmentDetailComponent)
+    component = fixture.componentInstance
+
+    clientService = TestBed.inject(ClientService)
+    toastrService = TestBed.inject(ToastrService)
+
+    spyOn(clientService, 'getClients').and.returnValue(of(clientTestData));
+    spyOn(clientService, 'getTopics').and.returnValue(of(idValueTestData));
+    spyOn(clientService, 'saveAppointment').and.returnValue(of({appointmentId: appointmentTestData[testDataIndex].id}));
+
+    spyOn(toastrService, 'success')
+    spyOn(toastrService, 'error')
+
+    component.ngOnInit()
+    fixture.detectChanges()
   });
 
   it('should create', () => {
@@ -66,7 +70,7 @@ describe('AppointmentDetailComponent', () => {
   });
 
   it('should initialize its client data from service', () => {
-    expect(clientServiceSpy.getClients).toHaveBeenCalled();
+    expect(clientService.getClients).toHaveBeenCalled();
     expect(component.clients[0].id).toBe(101);
     expect(component.clients[0].firstname).toBe('Jane');
     expect(component.clients[0].lastname).toBe('Doe');
@@ -81,8 +85,8 @@ describe('AppointmentDetailComponent', () => {
     submit.click();
 
     expect(component.saveAppointment).toHaveBeenCalled();
-    expect(clientServiceSpy.saveAppointment).toHaveBeenCalled();
+    expect(clientService.saveAppointment).toHaveBeenCalled();
     expect(component.appointment.id).toBe(appointmentTestData[testDataIndex].id);
-    expect(toastrServiceSpy.success).toHaveBeenCalledWith(`Appointment id ${component.appointment.id} saved`);
+    expect(toastrService.success).toHaveBeenCalledWith(`Appointment id ${component.appointment.id} saved`);
   });
 });

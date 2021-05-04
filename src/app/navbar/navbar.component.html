@@ -2,10 +2,10 @@
   <mat-toolbar-row>
     <span>Clientbiz Angular</span>
     <span class="example-fill-remaining-space"></span>
-    <button class="menuIconButton" *ngIf="isLoggedIn()" mat-icon-button [matMenuTriggerFor]="createMenu">
+    <button id="navMenu" class="menuIconButton" *ngIf="isLoggedIn()" mat-icon-button [matMenuTriggerFor]="createMenu">
       <mat-icon>business</mat-icon>
     </button>
-    <button class="menuIconButton" mat-icon-button [matMenuTriggerFor]="menu">
+    <button id="userMenu" class="menuIconButton" mat-icon-button [matMenuTriggerFor]="menu">
       <mat-icon>menu</mat-icon>
     </button>
     <mat-menu #createMenu="matMenu">
@@ -29,10 +29,10 @@
       <button id="googleBtn" *ngIf="!isLoggedIn()" mat-menu-item (click)="loginWithGoogle()">
         <mat-icon>portrait</mat-icon>Login with Google
       </button>
-      <button *ngIf="isLoggedIn()" (click)="openUserProfile()" mat-menu-item>
+      <button id="btnProfile" name="btnProfile" *ngIf="isLoggedIn()" (click)="openUserProfile()" mat-menu-item>
         <mat-icon>portrait</mat-icon>User Profile
       </button>
-      <button *ngIf="isLoggedIn()" mat-menu-item (click)="logout()">
+      <button id="btnLogout" *ngIf="isLoggedIn()" mat-menu-item (click)="logout()">
         <mat-icon>logout</mat-icon>Logout
       </button>
     </mat-menu>

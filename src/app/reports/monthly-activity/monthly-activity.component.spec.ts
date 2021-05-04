@@ -1,55 +1,49 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { MatTableModule } from '@angular/material/table';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { AuthService } from 'src/app/services/auth.service';
 import { monthlyActivityTestData } from 'src/app/test/mock-data/monthly-activity-test-data';
 import { ReportService } from '../report.service';
-
 import { MonthlyActivityComponent } from './monthly-activity.component';
 
 describe('MonthlyActivityComponent', () => {
   let component: MonthlyActivityComponent;
   let fixture: ComponentFixture<MonthlyActivityComponent>;
-  let reportServiceSpy : any;
+  let reportService: ReportService;
 
-  beforeEach(async () => {
-    reportServiceSpy = jasmine.createSpyObj('ReportService', ['getMonthlyActivity']);
-    reportServiceSpy.getMonthlyActivity.and.returnValue( of(monthlyActivityTestData));
-
-    await TestBed.configureTestingModule({
+  beforeEach(async() => {
+    TestBed.configureTestingModule({
       declarations: [ MonthlyActivityComponent ],
       imports: [
         RouterTestingModule,
-        MatTableModule,
         HttpClientTestingModule,
+        MatTableModule
       ],
       providers: [
-        { provide: ReportService, useValue: reportServiceSpy },
-      ],
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+        ReportService
+      ]
     })
-    .compileComponents();
-  });
+    .compileComponents()
+  })
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MonthlyActivityComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    component = fixture.componentInstance
 
-  afterEach(inject([HttpTestingController], (httpMock: HttpTestingController) => {
-    httpMock.verify();
-  }));
+    reportService = TestBed.inject(ReportService)
+    spyOn(reportService, 'getMonthlyActivity').and.returnValue(of(monthlyActivityTestData));
+
+    component.ngOnInit()
+    fixture.detectChanges()
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
   it('should initialize its list of contents from service', () => {
-    expect(reportServiceSpy.getMonthlyActivity).toHaveBeenCalled();
+    expect(reportService.getMonthlyActivity).toHaveBeenCalled();
     expect(component.contents.length).toBe(2);
   });
 

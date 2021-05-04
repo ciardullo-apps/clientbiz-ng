@@ -1,7 +1,5 @@
-import { HttpHeaders } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed, inject, async } from '@angular/core/testing';
-import { of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../services/auth.service';
 import { monthlyActivityTestData } from '../test/mock-data/monthly-activity-test-data';
@@ -14,7 +12,7 @@ describe('ReportService', () => {
   let authService : AuthService;
   let httpMock: HttpTestingController
 
-  beforeEach(() => {
+  beforeEach(async () => {
     TestBed.configureTestingModule({
       imports: [
           HttpClientTestingModule
@@ -23,6 +21,10 @@ describe('ReportService', () => {
         { provide: AuthService, useClass: MockAuth }
       ]
     })
+    .compileComponents()
+  })
+
+  beforeEach(() => {
     service = TestBed.inject(ReportService)
     authService = TestBed.inject(AuthService)
     httpMock = TestBed.inject(HttpTestingController)

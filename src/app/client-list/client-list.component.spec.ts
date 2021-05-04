@@ -1,42 +1,44 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClientListComponent } from './client-list.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ClientService } from '../services/client.service';
 import { clientTestData } from '../test/mock-data/client-test-data';
 import { of } from 'rxjs';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 describe('ClientListComponent', () => {
   let component: ClientListComponent;
   let fixture: ComponentFixture<ClientListComponent>;
-  let clientServiceSpy: any;
+  let clientService: ClientService;
 
-  beforeEach(async(() => {
-    clientServiceSpy = jasmine.createSpyObj('ClientService', ['getClients']);
-    clientServiceSpy.getClients.and.returnValue( of(clientTestData));
-
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ ClientListComponent ],
       imports: [
         RouterTestingModule,
-        MatTableModule,
         HttpClientTestingModule,
+        MatTableModule,
+        MatCheckboxModule
       ],
       providers: [
-        { provide: ClientService, useValue: clientServiceSpy },
-      ],
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+        ClientService
+      ]
     })
     .compileComponents();
-  }));
+  })
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ClientListComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    fixture = TestBed.createComponent(ClientListComponent)
+    component = fixture.componentInstance
+    clientService = TestBed.inject(ClientService)
+    
+    spyOn(clientService, 'getClients').and.returnValue( of(clientTestData))
+
+    component.ngOnInit()
+    fixture.detectChanges()
   });
 
   it('should create', () => {
@@ -44,7 +46,7 @@ describe('ClientListComponent', () => {
   });
 
   it('should initialize its list of clients from service', () => {
-    expect(clientServiceSpy.getClients).toHaveBeenCalled();
+    expect(clientService.getClients).toHaveBeenCalled();
     expect(component.clients.length).toBe(2);
     expect(component.getTotalAppts()).toBe(3);
     expect(component.getTotalRevenue()).toBe(30.0);

@@ -2,7 +2,7 @@
 <div mat-dialog-content>
   <div *ngIf="userInfo" style="padding: 10px">
     <img src="{{userInfo.photo}}"/>
-    <p>{{userInfo.firstName}} {{userInfo.lastName}}</p>
+    <p id="fullName">{{userInfo.firstName}} {{userInfo.lastName}}</p>
     <p>{{userInfo.email}}</p>
   </div>
 </div>

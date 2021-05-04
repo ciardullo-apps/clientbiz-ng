@@ -16,6 +16,6 @@ import { MatSortModule } from '@angular/material/sort';
     MatTableModule,
     MatSortModule,
     ReportsRoutingModule
-  ]
+  ],
 })
 export class ReportsModule { }

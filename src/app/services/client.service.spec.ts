@@ -7,35 +7,40 @@ import { clientTestData } from '../test/mock-data/client-test-data';
 import { appointmentTestData } from '../test/mock-data/appointment-test-data';
 import { topicTestData } from '../test/mock-data/topics-test-data';
 import { AuthService } from './auth.service';
+import { MockAuth } from '../test/mock-service/MockAuth';
 
 describe('ClientService', () => {
-  let authServiceSpy : any;
+  let service: ClientService
+  let authService : AuthService;
 
-  beforeEach(async(() => {
-    authServiceSpy = jasmine.createSpyObj('AuthService', ['buildHeaders']);
-
+  beforeEach(async() => {
     TestBed.configureTestingModule({
       imports: [
           HttpClientTestingModule,
       ],
       providers: [
-        { provide: AuthService, useValue: authServiceSpy }
+        { provide: AuthService, useClass: MockAuth }
       ]
     })
-  }));
+    .compileComponents()
+  })
+
+  beforeEach(() => {
+    service = TestBed.inject(ClientService)
+    authService = TestBed.inject(AuthService)
+  });
 
   afterEach(inject([HttpTestingController], (httpMock: HttpTestingController) => {
     httpMock.verify();
   }));
 
   it('should be created', () => {
-    const service: ClientService = TestBed.get(ClientService);
     expect(service).toBeTruthy();
   });
 
   it('should retrieve list of clients from http get to backend',
-    inject([HttpTestingController, ClientService],
-      (httpMock: HttpTestingController, service: ClientService) => {
+    inject([HttpTestingController],
+      (httpMock: HttpTestingController) => {
         // Call the service
         service.getClients().subscribe(data => {
           expect(data.length).toBe(2);
@@ -53,8 +58,8 @@ describe('ClientService', () => {
     ));
 
   it('should retrieve one client\'s detail from http get to backend',
-    inject([HttpTestingController, ClientService],
-      (httpMock: HttpTestingController, service: ClientService) => {
+    inject([HttpTestingController],
+      (httpMock: HttpTestingController) => {
         // Call the service
         service.getClient(102).subscribe(client => {
           expect(client.id).toBe(102);
@@ -71,8 +76,8 @@ describe('ClientService', () => {
     ));
 
   it('should retrieve one client\'s list of appointments from http get to backend',
-    inject([HttpTestingController, ClientService],
-      (httpMock: HttpTestingController, service: ClientService) => {
+    inject([HttpTestingController],
+      (httpMock: HttpTestingController) => {
         const clientId = 101;
         // Call the service
         service.getAppointments(clientId).subscribe(data => {
@@ -90,8 +95,8 @@ describe('ClientService', () => {
     ));
 
     it('should update paid date for appointment via http post to backend',
-      inject([HttpTestingController, ClientService],
-        (httpMock: HttpTestingController, service: ClientService) => {
+      inject([HttpTestingController],
+        (httpMock: HttpTestingController) => {
           const appointmentId= 101;
           let paidDate = new Date();
           paidDate.setHours(0, 0, 0, 0);
@@ -113,8 +118,8 @@ describe('ClientService', () => {
     ));
 
     it('should save a client via http post to backend',
-      inject([HttpTestingController, ClientService],
-        (httpMock: HttpTestingController, service: ClientService) => {
+      inject([HttpTestingController],
+        (httpMock: HttpTestingController) => {
           const clientId= 101;
 
           // Call the service
@@ -133,8 +138,8 @@ describe('ClientService', () => {
     ));
 
     it('should retrieve list of topics from http get to backend',
-      inject([HttpTestingController, ClientService],
-        (httpMock: HttpTestingController, service: ClientService) => {
+      inject([HttpTestingController],
+        (httpMock: HttpTestingController) => {
           // Call the service
           service.getTopics().subscribe(data => {
             expect(data.length).toBe(3);
@@ -153,8 +158,8 @@ describe('ClientService', () => {
       ));
 
       it('should retrieve one client\'s list of topics from http get to backend',
-        inject([HttpTestingController, ClientService],
-          (httpMock: HttpTestingController, service: ClientService) => {
+        inject([HttpTestingController],
+          (httpMock: HttpTestingController) => {
             const clientId = 101;
             // Call the service
             service.getSelectedTopics(clientId).subscribe(data => {

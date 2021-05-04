@@ -1,7 +1,5 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-
 import { ClientDetailComponent } from './client-detail.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ClientService } from '../services/client.service';
@@ -16,22 +14,16 @@ import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { topicTestData } from '../test/mock-data/topics-test-data';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 describe('ClientDetailComponent', () => {
   let component: ClientDetailComponent;
   let fixture: ComponentFixture<ClientDetailComponent>;
+  let clientService: ClientService;
+  let toastrService : ToastrService;
   let clientId = 101;
-  let clientServiceSpy: any;
-  let toastrServiceSpy : any;
 
-  beforeEach(async(() => {
-    clientServiceSpy = jasmine.createSpyObj('ClientService', ['getClient', 'saveClient', 'getTopics', 'getSelectedTopics']);
-    clientServiceSpy.getClient.and.returnValue( of(clientTestData.find(client => client.id === clientId)));
-    clientServiceSpy.saveClient.and.returnValue(of({ updatedClientId: clientId }));
-    clientServiceSpy.getTopics.and.returnValue(of(topicTestData));
-    clientServiceSpy.getSelectedTopics.and.returnValue(of(topicTestData.filter(x => clientTestData.find(client => client.id === clientId).assigned_topics.indexOf(x.id) !== -1)))
-    toastrServiceSpy = jasmine.createSpyObj('ToastrService', ['success', 'error']);
-
+  beforeEach(async () => {
     TestBed.configureTestingModule({
       declarations: [ ClientDetailComponent ],
       imports: [
@@ -41,24 +33,39 @@ describe('ClientDetailComponent', () => {
         MatFormFieldModule,
         BrowserAnimationsModule,
         FormsModule,
-        ToastrModule,
         MatSelectModule,
-        MatOptionModule
+        MatOptionModule,
+        MatCheckboxModule,
+        ToastrModule.forRoot({
+          positionClass: 'toast-top-right'
+        }),
       ],
       providers: [
-        { provide: ClientService, useValue: clientServiceSpy },
-        { provide: ToastrService, useValue: toastrServiceSpy },
+        ClientService,
+        ToastrService,
         { provide: ActivatedRoute, useValue: { snapshot: { paramMap: { get() { return clientId; } } } } }
-      ],
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+      ]
     })
     .compileComponents();
-  }));
-
+  })
+  
   beforeEach(() => {
-    fixture = TestBed.createComponent(ClientDetailComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    fixture = TestBed.createComponent(ClientDetailComponent)
+    component = fixture.componentInstance
+
+    clientService = TestBed.inject(ClientService)
+    toastrService = TestBed.inject(ToastrService)
+
+    spyOn(clientService, 'getClient').and.returnValue( of(clientTestData.find(client => client.id === clientId)));
+    spyOn(clientService, 'saveClient').and.returnValue(of({ updatedClientId: clientId }));
+    spyOn(clientService, 'getTopics').and.returnValue(of(topicTestData));
+    spyOn(clientService, 'getSelectedTopics').and.returnValue(of(topicTestData.filter(x => clientTestData.find(client => client.id === clientId).assigned_topics.indexOf(x.id) !== -1)))
+
+    spyOn(toastrService, 'success')
+    spyOn(toastrService, 'error')
+
+    component.ngOnInit()
+    fixture.detectChanges()
   });
 
   it('should create', () => {
@@ -66,17 +73,17 @@ describe('ClientDetailComponent', () => {
   });
 
   it('should initialize its client data from service', () => {
-    expect(clientServiceSpy.getClient).toHaveBeenCalled();
+    expect(clientService.getClient).toHaveBeenCalled();
     expect(component.client.id).toBe(101);
     expect(component.client.firstname).toBe('Jane');
     expect(component.client.lastname).toBe('Doe');
     expect(component.client.numappts).toBe(1);
     expect(component.client.revenue).toBe(10.0);
 
-    expect(clientServiceSpy.getSelectedTopics).toHaveBeenCalled();
+    expect(clientService.getSelectedTopics).toHaveBeenCalled();
     expect(component.client.assigned_topics.length).toBe(2);
 
-    expect(clientServiceSpy.getTopics).toHaveBeenCalled();
+    expect(clientService.getTopics).toHaveBeenCalled();
     expect(component.topics).toEqual(topicTestData);
   });
 
@@ -144,8 +151,8 @@ describe('ClientDetailComponent', () => {
     submit.click();
 
     expect(component.saveClient).toHaveBeenCalled();
-    expect(clientServiceSpy.saveClient).toHaveBeenCalled();
-    expect(toastrServiceSpy.success).toHaveBeenCalledWith(`Client id ${clientId} saved`);
+    expect(clientService.saveClient).toHaveBeenCalled();
+    expect(toastrService.success).toHaveBeenCalledWith(`Client id ${clientId} saved`);
   });
 
 });
