@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { ReportsRoutingModule } from './reports-routing.module';
 import { MonthlyActivityComponent } from './monthly-activity/monthly-activity.component';
+import { MatTableModule } from "@angular/material/table";
+import { MatSortModule } from '@angular/material/sort';
 
 
 @NgModule({
@@ -11,6 +13,8 @@ import { MonthlyActivityComponent } from './monthly-activity/monthly-activity.co
   ],
   imports: [
     CommonModule,
+    MatTableModule,
+    MatSortModule,
     ReportsRoutingModule
   ]
 })

@@ -1,1 +1,46 @@
-<p>monthly-activity works!</p>
+<div class="monthly-activity-class">
+    <mat-table [dataSource]="dataSource" matSort>
+  
+        <ng-container matColumnDef="monthOfYear">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Month - Year</mat-header-cell>
+          <mat-cell *matCellDef="let content">{{ content.monthOfYear }}</mat-cell>
+          <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="totalClients">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Clients</mat-header-cell>
+            <mat-cell *matCellDef="let content">{{ content.totalClients | number }}</mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="totalAppointments">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Appointments</mat-header-cell>
+            <mat-cell *matCellDef="let content">{{ content.totalAppointments | number }}</mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="totalHours">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Hours</mat-header-cell>
+          <mat-cell *matCellDef="let content">{{ content.totalHours | number: '1.2-2' }}</mat-cell>
+          <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="totalRevenue">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Revenue</mat-header-cell>
+            <mat-cell *matCellDef="let content">{{ content.totalRevenue | currency }}</mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="averageRate">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Average Rate</mat-header-cell>
+            <mat-cell *matCellDef="let content">{{ content.averageRate | currency }}</mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        <mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></mat-footer-row>
+  
+    </mat-table>
+  </div>
+  
