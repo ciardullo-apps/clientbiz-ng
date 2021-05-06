@@ -12,6 +12,7 @@ import { MonthlyActivity } from '../model/monthly-activity'
 export class MonthlyActivityComponent implements OnInit {
 
   contents: MonthlyActivity[]
+  columnHeaders = ['Month - Year', 'Clients', 'Appointments', 'Hours', 'Revenue', 'Average Rate']
   displayedColumns = ['monthOfYear', 'totalClients', 'totalAppointments', 'totalHours', 'totalRevenue', 'averageRate' ];
   dataSource;
 

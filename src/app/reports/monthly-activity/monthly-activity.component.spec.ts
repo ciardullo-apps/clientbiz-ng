@@ -57,6 +57,14 @@ describe('MonthlyActivityComponent', () => {
     expect(table[2].nativeElement.innerHTML).toBe(component.contents[1].totalClients.toString()) // Second row, total clients value
   })
 
+  it('should correctly populate the report column headings with headers defined in the component', () => {
+    const headerRowNum = 0
+    component.columnHeaders.forEach((columnHeader, index) => {
+      let columnHeading: DebugElement[] = fixture.debugElement.queryAll(By.css(`.mat-column-${component.displayedColumns[index]}`))
+      expect(columnHeading[headerRowNum].nativeElement.innerHTML).toBe(columnHeader)
+    });
+  })
+
   it('should correctly populate the ALL displayed columns with contents from Report service', () => {
     // Iterate each row of test data
     for(let rowNum = 0; rowNum < component.contents.length; rowNum++) {

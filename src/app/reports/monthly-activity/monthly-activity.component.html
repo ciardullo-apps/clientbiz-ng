@@ -2,7 +2,7 @@
     <mat-table [dataSource]="dataSource" matSort>
   
         <ng-container matColumnDef="monthOfYear">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Month - Year</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header>{{ columnHeaders[0] }}</mat-header-cell>
           <mat-cell *matCellDef="let content">
             <a [routerLink]="['/reports/activity-year-month', content.monthOfYear.substring(0, 4), content.monthOfYear.substring(5)]">{{ content.monthOfYear }}</a>
           </mat-cell>
@@ -10,31 +10,31 @@
         </ng-container>
   
         <ng-container matColumnDef="totalClients">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Clients</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header>{{ columnHeaders[1] }}</mat-header-cell>
             <mat-cell *matCellDef="let content">{{ content.totalClients | number }}</mat-cell>
             <mat-footer-cell *matFooterCellDef></mat-footer-cell>
         </ng-container>
 
         <ng-container matColumnDef="totalAppointments">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Appointments</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header>{{ columnHeaders[2] }}</mat-header-cell>
             <mat-cell *matCellDef="let content">{{ content.totalAppointments | number }}</mat-cell>
             <mat-footer-cell *matFooterCellDef></mat-footer-cell>
         </ng-container>
 
         <ng-container matColumnDef="totalHours">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Hours</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header>{{ columnHeaders[3] }}</mat-header-cell>
           <mat-cell *matCellDef="let content">{{ content.totalHours | number: '1.2-2' }}</mat-cell>
           <mat-footer-cell *matFooterCellDef></mat-footer-cell>
         </ng-container>
   
         <ng-container matColumnDef="totalRevenue">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Revenue</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header>{{ columnHeaders[4] }}</mat-header-cell>
             <mat-cell *matCellDef="let content">{{ content.totalRevenue | currency }}</mat-cell>
             <mat-footer-cell *matFooterCellDef></mat-footer-cell>
         </ng-container>
   
         <ng-container matColumnDef="averageRate">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Average Rate</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header>{{ columnHeaders[5] }}</mat-header-cell>
             <mat-cell *matCellDef="let content">{{ content.averageRate | currency }}</mat-cell>
             <mat-footer-cell *matFooterCellDef></mat-footer-cell>
         </ng-container>
