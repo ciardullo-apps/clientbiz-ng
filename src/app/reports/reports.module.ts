@@ -5,11 +5,13 @@ import { ReportsRoutingModule } from './reports-routing.module';
 import { MonthlyActivityComponent } from './monthly-activity/monthly-activity.component';
 import { MatTableModule } from "@angular/material/table";
 import { MatSortModule } from '@angular/material/sort';
+import { ActivityYearMonthComponent } from './activity-year-month/activity-year-month.component';
 
 
 @NgModule({
   declarations: [
-    MonthlyActivityComponent
+    MonthlyActivityComponent,
+    ActivityYearMonthComponent
   ],
   imports: [
     CommonModule,

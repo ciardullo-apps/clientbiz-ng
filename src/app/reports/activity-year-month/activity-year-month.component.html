@@ -1,0 +1,70 @@
+<div class="activity-year-month-class">
+    <mat-table [dataSource]="dataSource" matSort>
+  
+        <ng-container matColumnDef="id">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+          <mat-cell *matCellDef="let content">{{ content.id }}</mat-cell>
+          <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="firstname">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Firstname</mat-header-cell>
+            <mat-cell *matCellDef="let content">{{ content.firstname }}</mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="lastname">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Lastname</mat-header-cell>
+            <mat-cell *matCellDef="let content">{{ content.lastname }}</mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="topic_name">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Topic</mat-header-cell>
+          <mat-cell *matCellDef="let content">{{ content.topic_name }}</mat-cell>
+          <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="starttime">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Start time</mat-header-cell>
+            <mat-cell *matCellDef="let content">{{ content.starttime | date: 'short'}}</mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="duration">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Duration</mat-header-cell>
+            <mat-cell *matCellDef="let content">{{ content.duration | number }}</mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="rate">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Rate</mat-header-cell>
+            <mat-cell *matCellDef="let content">{{ content.rate | number }}</mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="billingpct">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Billing %</mat-header-cell>
+            <mat-cell *matCellDef="let content">{{ content.billingpct | number }}</mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+        
+        <ng-container matColumnDef="revenue">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Revenue</mat-header-cell>
+            <mat-cell *matCellDef="let content">{{ (content.rate * (content.duration / 60) * content.billingpct) | currency }}</mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="paid">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Paid</mat-header-cell>
+            <mat-cell *matCellDef="let content">{{ content.paid | date: 'shortDate' }}</mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        <mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></mat-footer-row>
+  
+    </mat-table>
+  </div>
+  

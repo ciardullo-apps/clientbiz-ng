@@ -3,7 +3,9 @@
   
         <ng-container matColumnDef="monthOfYear">
           <mat-header-cell *matHeaderCellDef mat-sort-header>Month - Year</mat-header-cell>
-          <mat-cell *matCellDef="let content">{{ content.monthOfYear }}</mat-cell>
+          <mat-cell *matCellDef="let content">
+            <a [routerLink]="['/reports/activity-year-month', content.monthOfYear.substring(0, 4), content.monthOfYear.substring(5)]">{{ content.monthOfYear }}</a>
+          </mat-cell>
           <mat-footer-cell *matFooterCellDef></mat-footer-cell>
         </ng-container>
   
