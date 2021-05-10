@@ -1,7 +1,7 @@
 <form name="form" (ngSubmit)="clientForm.form.valid && saveClient()" #clientForm ="ngForm">
     <div *ngIf="client" style="padding: 10px">
     <mat-form-field *ngIf="client.id" class="client-full-width">
-      <input matInput placeholder="ID" value="{{client.id}}" />
+      <input matInput placeholder="ID" [value]="client.id" />
     </mat-form-field>
     <mat-form-field class="client-full-width">
         <input id="firstName" matInput name="firstname" placeholder="First name" [(ngModel)]="client.firstname" required />
