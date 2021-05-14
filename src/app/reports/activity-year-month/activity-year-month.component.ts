@@ -13,6 +13,7 @@ import { ReportService } from '../report.service';
 export class ActivityYearMonthComponent implements OnInit {
 
   contents: ActivityYearMonth[]
+  columnHeaders = ['ID', 'First name', 'Last name', 'Topic', 'Start time', 'Duration', 'Rate', 'Billing %', 'Revenue', 'Paid']
   displayedColumns = ['id', 'firstname', 'lastname', 'topic_name', 'starttime', 'duration', 'rate', 'billingpct', 'revenue', 'paid' ];
   dataSource;
 
