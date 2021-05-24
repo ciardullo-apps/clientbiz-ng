@@ -90,7 +90,7 @@ describe('ActivityYearMonthComponent', () => {
         // x + 1 below skips the header row
         if(columnName === 'starttime') {
           // Ensure date/time is formatted properly
-          expect(cell[rowNum + 1].nativeElement.innerText).toContain(component.contents[rowNum][columnName].toLocaleString('en-US', {hour: '2-digit', minute:'2-digit'}))
+          expect(cell[rowNum + 1].nativeElement.innerText).toContain(component.contents[rowNum][columnName].toLocaleString('en-US', {month: 'numeric', day: 'numeric', year: '2-digit', hour: 'numeric', minute:'numeric'}))
         } else if(columnName === 'revenue') {
           // Ensure accuracy of revenue calculation
           const revenue = component.contents[rowNum]['rate'] * (component.contents[rowNum]['duration'] / 60) * component.contents[rowNum]['billingpct']
