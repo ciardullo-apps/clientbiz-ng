@@ -110,7 +110,13 @@ describe('ClientDetailComponent', () => {
     tick()
     expect(component.client.firstcontact).toBeNull();
 
-    expect(component.toggleFirstContact).toHaveBeenCalledTimes(3);
+    solicited.click();
+    fixture.detectChanges()
+    tick()
+    expect(component.client.firstcontact).toEqual(originalFirstContact);
+
+    // TODO Investigate why an odd number of clicks results in this test sometimes passes, sometimes fails
+    expect(component.toggleFirstContact).toHaveBeenCalledTimes(4);
   }))
 
   it('should correctly disable firstcontact when solicited checkbox is clicked', fakeAsync(() => {
