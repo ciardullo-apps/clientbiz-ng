@@ -58,8 +58,10 @@ export class ClientDetailComponent implements OnInit {
   toggleFirstContact() : void {
     if (this.client.firstcontact) {
       this.client.firstcontact = null;
+      this.client.solicited = false
     } else {
       this.client.firstcontact = this.originalFirstContact;
+      this.client.solicited = true
     }
   }
 

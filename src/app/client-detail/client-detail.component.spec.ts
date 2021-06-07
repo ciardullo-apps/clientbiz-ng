@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ClientDetailComponent } from './client-detail.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -64,7 +64,6 @@ describe('ClientDetailComponent', () => {
     spyOn(toastrService, 'success')
     spyOn(toastrService, 'error')
 
-    component.ngOnInit()
     fixture.detectChanges()
   });
 
@@ -87,12 +86,7 @@ describe('ClientDetailComponent', () => {
     expect(component.topics).toEqual(topicTestData);
   });
 
-  /*
-  TODO Investigate why an odd number of clicks() in these next two tests
-  result in subsequent failures. Seems like something is "remembered"
-  when ng test runs more than once. An even number of clicks() fixes this problem
-  */
-  it('should correctly reset firstcontact when solicited checkbox is clicked', () => {
+  it('should correctly reset firstcontact when solicited checkbox is clicked', fakeAsync(() => {
     const originalFirstContact = component.client.firstcontact;
     const spy = spyOn(component, "toggleFirstContact").and.callThrough();
 
@@ -102,47 +96,58 @@ describe('ClientDetailComponent', () => {
     expect(component.client.firstcontact).toEqual(originalFirstContact);
 
     solicited.click();
+    fixture.detectChanges()
+    tick()
     expect(component.client.firstcontact).toBeNull();
 
     solicited.click();
+    fixture.detectChanges()
+    tick()
     expect(component.client.firstcontact).toEqual(originalFirstContact);
 
     solicited.click();
+    fixture.detectChanges()
+    tick()
     expect(component.client.firstcontact).toBeNull();
 
-    solicited.click();
-    expect(component.client.firstcontact).toEqual(originalFirstContact);
+    expect(component.toggleFirstContact).toHaveBeenCalledTimes(3);
+  }))
 
-    expect(component.toggleFirstContact).toHaveBeenCalledTimes(4);
-  });
-
-  it('should correctly disable firstcontact when solicited checkbox is clicked', () => {
+  it('should correctly disable firstcontact when solicited checkbox is clicked', fakeAsync(() => {
     const solicited = fixture.debugElement.nativeElement.querySelector('#solicited');
-    const firstcontact = fixture.debugElement.nativeElement.querySelector('#firstcontact');
+    let firstcontact = fixture.debugElement.nativeElement.querySelector('#firstcontact');
 
-    expect(firstcontact.disabled).toBeFalse();
+    expect(component.client.solicited).toBeTrue()
+    expect(firstcontact.disabled).toBeFalse()
+
+    solicited.click()
+    fixture.detectChanges();
+    tick()
+    expect(component.client.solicited).toBeFalse()
+    fixture.detectChanges();
+    expect(firstcontact.disabled).toBeTrue()
 
     solicited.click();
     fixture.detectChanges();
-    fixture.whenStable().then(() => {
-      expect(firstcontact.disabled).toBeTrue();
-      solicited.click();
-      fixture.detectChanges();
-      fixture.whenStable().then(() => {
-        expect(firstcontact.disabled).toBeFalse();
-        solicited.click();
-        fixture.detectChanges();
-        fixture.whenStable().then(() => {
-          expect(firstcontact.disabled).toBeTrue();
-          solicited.click();
-          fixture.detectChanges();
-          fixture.whenStable().then(() => {
-            expect(firstcontact.disabled).toBeFalse();
-          });
-        });
-      });
-    });
-  });
+    tick()
+    expect(component.client.solicited).toBeTrue()
+    fixture.detectChanges();
+    expect(firstcontact.disabled).toBeFalse()
+
+    solicited.click();
+    fixture.detectChanges();
+    tick()
+    expect(component.client.solicited).toBeFalse()
+    fixture.detectChanges();
+    expect(firstcontact.disabled).toBeTrue()
+
+    solicited.click();
+    fixture.detectChanges();
+    tick()
+    expect(component.client.solicited).toBeTrue()
+    fixture.detectChanges();
+    expect(firstcontact.disabled).toBeFalse()
+  }))
 
   it('should call saveClient if there are no validation errors', () => {
     spyOn(component, "saveClient").and.callThrough();
