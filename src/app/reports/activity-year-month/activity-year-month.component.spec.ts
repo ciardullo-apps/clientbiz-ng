@@ -40,6 +40,8 @@ describe('ActivityYearMonthComponent', () => {
                       return year
                     case 'month':
                       return month
+                    default:
+                        return month
                   }
                 }
               }
