@@ -1,6 +1,6 @@
 <div class="receivable-class">
     <mat-form-field>
-        <input matInput [matDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="paidDatePicker">
+        <input matInput [matDatepicker]="picker" placeholder="Choose a date" [formControl]="paidDatePicker">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
