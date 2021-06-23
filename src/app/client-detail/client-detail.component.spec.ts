@@ -6,7 +6,7 @@ import { ClientService } from '../services/client.service';
 import { ActivatedRoute } from '@angular/router';
 import { clientTestData } from '../test/mock-data/client-test-data';
 import { of } from 'rxjs';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -33,6 +33,7 @@ describe('ClientDetailComponent', () => {
         MatFormFieldModule,
         BrowserAnimationsModule,
         FormsModule,
+        ReactiveFormsModule,
         MatSelectModule,
         MatOptionModule,
         MatCheckboxModule,
@@ -85,6 +86,12 @@ describe('ClientDetailComponent', () => {
     expect(clientService.getTopics).toHaveBeenCalled();
     expect(component.topics).toEqual(topicTestData);
   });
+
+  it('should initialize its formgroup from the client data', () => {
+    // Client.ts also defined optional properties like numAppts and revenue that are not in the form
+    // jasmine.objectContaining ensures that the form's property values are a subset of the client
+    expect(component.client).toEqual(jasmine.objectContaining(component.clientForm.value))
+  })
 
   it('should correctly reset firstcontact when solicited checkbox is clicked', fakeAsync(() => {
     const originalFirstContact = component.client.firstcontact;

@@ -10,7 +10,7 @@ export class Client {
   firstresponse: Date;
   timezone: string;
   solicited: boolean;
-  numappts: number;
-  revenue: number;
-  lastapptdate: string;
+  numappts?: number;
+  revenue?: number;
+  lastapptdate?: string;
 }

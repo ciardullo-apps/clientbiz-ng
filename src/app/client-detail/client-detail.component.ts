@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Client } from '../model/client';
 import { Topic } from '../model/topic';
@@ -14,8 +14,20 @@ import { ToastrService } from 'ngx-toastr';
 export class ClientDetailComponent implements OnInit {
   client: Client;
   originalFirstContact: Date;
-  topicSelect = new FormControl();
   topics: Topic[];
+  clientForm: FormGroup = new FormGroup ({
+    id: new FormControl({disabled: true}),
+    firstname: new FormControl(),
+    lastname: new FormControl(),
+    assigned_topics: new FormControl(),
+    contactname: new FormControl(),
+    city: new FormControl(),
+    state: new FormControl(),
+    timezone: new FormControl(),
+    solicited: new FormControl(),
+    firstcontact: new FormControl({disabled: true}),
+    firstresponse: new FormControl(),
+  })
 
   constructor(
     private route: ActivatedRoute,
@@ -36,39 +48,67 @@ export class ClientDetailComponent implements OnInit {
         .subscribe(client => {
           this.client = client;
           if(!this.client.firstcontact) {
-            this.originalFirstContact = this.nextHourDate();
+            this.originalFirstContact = null // this.nextHourDate();
           } else {
             this.originalFirstContact = this.client.firstcontact;
           }
           this.clientService.getSelectedTopics(id)
             .subscribe(clientTopics => {
               this.client.assigned_topics = clientTopics.map(a => a['id']);
-          })
+              this.clientForm.patchValue(this.client) // patchValue() ignores properties in Client that are not in FormGroup
+              this.clientForm.get('id').disable()
+            })
         });
     } else {
-      this.client = new Client();
-      this.client.solicited = true;
-      this.client.firstcontact = this.nextHourDate();
+      this.client = {
+        id: 0,
+        firstname: '',
+        lastname: '',
+        assigned_topics: [],
+        contactname: '',
+        city: '',
+        state: '',
+        firstcontact: this.nextHourDate(),
+        firstresponse: this.nextHourDate(),
+        timezone: '',
+        solicited: true
+      }
       this.originalFirstContact = this.client.firstcontact;
-      this.client.firstresponse = this.client.firstcontact;
+      console.log(this.originalFirstContact)
+      this.clientForm.patchValue(this.client)
+      this.clientForm.get('firstcontact').setValue(this.client.firstcontact.toISOString().substring(0, 16))
+      this.clientForm.get('firstresponse').setValue(this.client.firstresponse.toISOString().substring(0, 16))
+      this.clientForm.get('id').disable()
+      // this.client = new Client();
+      // this.client.id = -1
+      // this.client.solicited = true;
+      // this.client.firstcontact = this.nextHourDate();
+      // this.originalFirstContact = this.client.firstcontact;
+      // this.client.firstresponse = this.client.firstcontact;
     }
-
   }
 
   toggleFirstContact() : void {
     if (this.client.firstcontact) {
       this.client.firstcontact = null;
       this.client.solicited = false
+      this.clientForm.get('firstcontact').disable()
     } else {
       this.client.firstcontact = this.originalFirstContact;
       this.client.solicited = true
+      this.clientForm.get('firstcontact').enable()
     }
   }
 
   saveClient() : void {
+    this.clientForm.get('id').enable()
+    this.client = this.clientForm.value
+    this.clientForm.get('id').disable()
+
     if(this.client.id) {
       console.log('Saving client 1', this.client.id);
     } else {
+      delete this.client.id
       console.log('Adding client', this.client.firstname, this.client.lastname, this.client.assigned_topics);
     }
 
@@ -76,6 +116,7 @@ export class ClientDetailComponent implements OnInit {
       .subscribe(
         (response: UpdateClientResponse) => {
           this.client.id = response.updatedClientId;
+          this.clientForm.patchValue(this.client)
           console.log(`Client id ${response.updatedClientId} saved`);
           this.toastr.success(`Client id ${response.updatedClientId} saved`);
         },
