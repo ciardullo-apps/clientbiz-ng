@@ -13,4 +13,5 @@ export class Client {
   numappts?: number;
   revenue?: number;
   lastapptdate?: string;
+  totalhours?: number;
 }

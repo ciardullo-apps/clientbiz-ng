@@ -12,7 +12,7 @@ import { Client } from '../model/client'
 export class ClientListComponent implements OnInit {
 
   clients: Client[];
-  displayedColumns = ['id', 'firstname', 'lastname', 'contactname', 'timezone', 'solicited', 'numappts', 'revenue', 'lastapptdate'];
+  displayedColumns = ['id', 'firstname', 'lastname', 'contactname', 'timezone', 'solicited', 'numappts', 'revenue', 'totalhours', 'lastapptdate'];
   dataSource;
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -46,5 +46,13 @@ export class ClientListComponent implements OnInit {
      totalRevenue = this.clients.map(t => t.revenue).reduce((acc, value) => acc + value, 0);
     }
     return totalRevenue;
+  }
+
+  getTotalHours() {
+    let totalHours = 0.0;
+    if(this.clients) {
+     totalHours = this.clients.map(t => t.totalhours).reduce((acc, value) => acc + value, 0);
+    }
+    return totalHours;
   }
 }

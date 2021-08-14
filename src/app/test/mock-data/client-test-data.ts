@@ -15,7 +15,8 @@ export const clientTestData : Client[] = [
     solicited: true,
     numappts: 1,
     revenue: 10.00,
-    lastapptdate: '2019-01-03'
+    lastapptdate: '2019-01-03',
+    totalhours: 11
   },
   {
     id: 102,
@@ -31,6 +32,7 @@ export const clientTestData : Client[] = [
     solicited: false,
     numappts: 2,
     revenue: 20.00,
-    lastapptdate: '2019-02-03'
+    lastapptdate: '2019-02-03',
+    totalhours: 12
   }
 ];

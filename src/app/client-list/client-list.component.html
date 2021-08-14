@@ -52,6 +52,14 @@
         <mat-footer-cell id="totalAppts" *matFooterCellDef>{{ getTotalAppts() | number }}</mat-footer-cell>
       </ng-container>
 
+      <ng-container matColumnDef="totalhours">
+        <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'right-align'">Hours</mat-header-cell>
+        <mat-cell *matCellDef="let client" [ngClass]="'right-align'">
+            {{ client.totalhours  | number: '1.2-2' }}
+        </mat-cell>
+        <mat-footer-cell id="totalHours" *matFooterCellDef>{{ getTotalHours() | number: '1.2-2' }}</mat-footer-cell>
+      </ng-container>
+
       <ng-container matColumnDef="revenue">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Revenue</mat-header-cell>
         <mat-cell *matCellDef="let client">{{ client.revenue | currency }}</mat-cell>

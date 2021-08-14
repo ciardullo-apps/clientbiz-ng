@@ -14,7 +14,7 @@ describe('ClientListComponent', () => {
   let fixture: ComponentFixture<ClientListComponent>;
   let clientService: ClientService;
 
-  beforeEach(() => {
+  beforeEach(async() => {
     TestBed.configureTestingModule({
       declarations: [ ClientListComponent ],
       imports: [
@@ -35,7 +35,7 @@ describe('ClientListComponent', () => {
     component = fixture.componentInstance
     clientService = TestBed.inject(ClientService)
     
-    spyOn(clientService, 'getClients').and.returnValue( of(clientTestData))
+    spyOn(clientService, 'getClients').and.returnValue(of(clientTestData))
 
     component.ngOnInit()
     fixture.detectChanges()
@@ -60,5 +60,10 @@ describe('ClientListComponent', () => {
   it('should correctly sum total revenue', () => {
     expect(component.getTotalRevenue()).toBe(30.0);
     expect(fixture.nativeElement.querySelector('#totalRevenue').innerHTML).toBe('$30.00');
+  });
+
+  it('should correctly sum total hours', () => {
+    expect(component.getTotalHours()).toBe(23.0);
+    expect(fixture.nativeElement.querySelector('#totalHours').innerHTML).toBe('23.00');
   });
 });
