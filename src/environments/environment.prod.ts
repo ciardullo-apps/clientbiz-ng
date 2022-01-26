@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  apiAddress: 'https://basilico/clientbiz-node'
 };

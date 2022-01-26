@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 export const environment = {
   production: false,
-  apiAddress: 'https://myhost:8080/clientbiz-node'
+  apiAddress: 'https://basilico/clientbiz-node'
 };
 
 /*

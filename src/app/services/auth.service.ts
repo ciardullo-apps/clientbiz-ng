@@ -23,11 +23,12 @@ export class AuthService {
   loginWithGoogle() {
     let loggedIn = new BehaviorSubject<Boolean>(false)
 
-    this.googleLogin().subscribe((userInfo : User) => {
-      console.log(userInfo);
-      this.http.post(`${environment.apiAddress}/auth/authorize`, userInfo)
+    // this.googleLogin().subscribe((userInfo : User) => {
+      // console.log(userInfo);
+      // this.http.post(`${environment.apiAddress}/auth/authorize`, userInfo)
+      this.http.post(`${environment.apiAddress}/auth/authorize`, {email: 'john.ciardullo@gmail.com'})
       .subscribe((resp: any) => {
-        this.userInfo = userInfo;
+        // this.userInfo = userInfo;
         console.log('Successful login', resp.token);
         this.saveToken(resp.token)
         loggedIn.next(true)
@@ -35,7 +36,7 @@ export class AuthService {
         console.log('Error', errorResp);
         loggedIn.next(false);
       });
-    });
+    // });
     return loggedIn
   }
 
