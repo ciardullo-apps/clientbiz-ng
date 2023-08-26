@@ -66,9 +66,6 @@ import { ToastrModule } from 'ngx-toastr';
     ToastrModule.forRoot()
   ],
   providers: [],
-  entryComponents: [
-    ProfileDialogComponent,
-  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
