@@ -70,17 +70,17 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "clientbiz-ng:build:production"
+              "buildTarget": "clientbiz-ng:build:production"
             },
             "development": {
-              "browserTarget": "clientbiz-ng:build:development"
+              "buildTarget": "clientbiz-ng:build:development"
             }
           },
           "defaultConfiguration": "development",
           "options": {
             "host": "basilico",
             "port": 4200,
-            "browserTarget": "clientbiz-ng:build",
+            "buildTarget": "clientbiz-ng:build",
             "sslKey": "/opt/certs/basilico.key",
             "sslCert": "/opt/certs/basilico.crt",
             "ssl": true
@@ -89,7 +89,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "clientbiz-ng:build"
+            "buildTarget": "clientbiz-ng:build"
           }
         },
         "test": {
