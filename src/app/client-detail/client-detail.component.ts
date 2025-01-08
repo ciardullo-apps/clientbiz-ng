@@ -76,8 +76,8 @@ export class ClientDetailComponent implements OnInit {
       this.originalFirstContact = this.client.firstcontact;
       console.log(this.originalFirstContact)
       this.clientForm.patchValue(this.client)
-      this.clientForm.get('firstcontact').setValue(this.client.firstcontact.toISOString().substring(0, 16))
-      this.clientForm.get('firstresponse').setValue(this.client.firstresponse.toISOString().substring(0, 16))
+      this.clientForm.get('firstcontact').setValue(this.getTimezoneAdjustedISOString(this.client.firstcontact))
+      this.clientForm.get('firstresponse').setValue(this.getTimezoneAdjustedISOString(this.client.firstresponse))
       this.clientForm.get('id').disable()
       // this.client = new Client();
       // this.client.id = -1
@@ -141,4 +141,9 @@ export class ClientDetailComponent implements OnInit {
       });
   }
 
+  getTimezoneAdjustedISOString(d: Date): string {
+    const tzoffset = d.getTimezoneOffset() * 60000
+    // toISOString returns date in UTC, need to adjust by tzoffset prior to calling toISOString
+    return (new Date(d.getTime() - tzoffset)).toISOString().replace('T', ' ').substring(0,16)
+  }
 }
