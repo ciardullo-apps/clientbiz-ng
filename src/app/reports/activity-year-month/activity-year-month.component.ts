@@ -1,14 +1,17 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { ActivityYearMonth } from '../model/activity-year-month';
 import { ReportService } from '../report.service';
+import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-activity-year-month',
   templateUrl: './activity-year-month.component.html',
-  styleUrls: ['./activity-year-month.component.css']
+  styleUrls: ['./activity-year-month.component.css'],
+  standalone: true,
+  imports: [ MatTableModule, DatePipe, DecimalPipe, CurrencyPipe, ]
 })
 export class ActivityYearMonthComponent implements OnInit {
 

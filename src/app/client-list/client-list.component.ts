@@ -1,13 +1,18 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { ClientService } from '../services/client.service'
 import { Client } from '../model/client'
+import { RouterLink } from '@angular/router';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { CurrencyPipe, DecimalPipe, NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-client-list',
   templateUrl: './client-list.component.html',
-  styleUrls: ['./client-list.component.css']
+  styleUrls: ['./client-list.component.css'],
+  standalone: true,
+  imports: [ MatTableModule, RouterLink, MatCheckboxModule, DecimalPipe, CurrencyPipe, NgClass, ]
 })
 export class ClientListComponent implements OnInit {
 

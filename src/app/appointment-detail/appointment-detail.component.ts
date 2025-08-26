@@ -4,11 +4,19 @@ import { Appointment } from '../model/appointment';
 import { ClientService, UpdateAppointmentResponse } from '../services/client.service';
 import { ToastrService } from 'ngx-toastr';
 import { Topic } from '../model/topic';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import { DatePipe, NgFor, NgIf } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-appointment-detail',
   templateUrl: './appointment-detail.component.html',
-  styleUrls: ['./appointment-detail.component.css']
+  styleUrls: ['./appointment-detail.component.css'],
+  standalone: true,
+  imports: [ MatInputModule, MatFormFieldModule, MatCheckboxModule, FormsModule, ReactiveFormsModule, MatSelectModule, NgIf, NgFor, DatePipe, ]
 })
 export class AppointmentDetailComponent implements OnInit {
 

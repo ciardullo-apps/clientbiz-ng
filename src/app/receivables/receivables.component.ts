@@ -1,14 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { Receivable } from '../model/receivable';
 import { ClientService, UpdatePaidDateResponse } from '../services/client.service';
-import { MatTableDataSource } from '@angular/material/table';
-import { FormControl } from '@angular/forms';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { DateAdapter, provideNativeDateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'app-receivables',
   templateUrl: './receivables.component.html',
-  styleUrls: ['./receivables.component.css']
+  styleUrls: ['./receivables.component.css'],
+  standalone: true,
+  imports: [ MatTableModule, MatDatepickerModule, MatFormFieldModule, MatInputModule,  ReactiveFormsModule, DatePipe, DecimalPipe, CurrencyPipe, ],
+  providers: [ provideNativeDateAdapter() ]
 })
 export class ReceivablesComponent implements OnInit {
 

@@ -1,15 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Client } from '../model/client';
 import { Topic } from '../model/topic';
 import { ClientService, UpdateClientResponse } from '../services/client.service'
 import { ToastrService } from 'ngx-toastr';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatOptionModule } from '@angular/material/core';
+import { NgFor, NgIf } from '@angular/common';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-client-detail',
   templateUrl: './client-detail.component.html',
-  styleUrls: ['./client-detail.component.css']
+  styleUrls: ['./client-detail.component.css'],
+  standalone: true,
+  imports: [ MatInputModule, MatFormFieldModule, MatCheckboxModule, FormsModule, ReactiveFormsModule, MatSelectModule, NgIf, NgFor, ]
 })
 export class ClientDetailComponent implements OnInit {
   client: Client;

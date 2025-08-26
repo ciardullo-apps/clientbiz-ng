@@ -2,13 +2,16 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Appointment } from '../model/appointment';
 import { ActivatedRoute } from '@angular/router';
 import { ClientService } from '../services/client.service';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import { DatePipe, DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-appointments',
   templateUrl: './appointments.component.html',
-  styleUrls: ['./appointments.component.css']
+  styleUrls: ['./appointments.component.css'],
+  standalone: true,
+  imports: [ MatTableModule, DatePipe, DecimalPipe, ]
 })
 export class AppointmentsComponent implements OnInit {
   clientId: number;

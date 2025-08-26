@@ -9,15 +9,13 @@ import { ActivityYearMonthComponent } from './activity-year-month/activity-year-
 
 
 @NgModule({
-  declarations: [
-    MonthlyActivityComponent,
-    ActivityYearMonthComponent
-  ],
   imports: [
     CommonModule,
     MatTableModule,
     MatSortModule,
-    ReportsRoutingModule
+    ReportsRoutingModule,
+    ActivityYearMonthComponent,
+    MonthlyActivityComponent,
   ],
 })
 export class ReportsModule { }
