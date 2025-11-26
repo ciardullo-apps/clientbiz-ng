@@ -7,7 +7,7 @@ import { Topic } from '../model/topic';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
-import { DatePipe, NgFor, NgIf } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
@@ -16,7 +16,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
   templateUrl: './appointment-detail.component.html',
   styleUrls: ['./appointment-detail.component.css'],
   standalone: true,
-  imports: [ MatInputModule, MatFormFieldModule, MatCheckboxModule, FormsModule, ReactiveFormsModule, MatSelectModule, NgIf, NgFor, DatePipe, ]
+  imports: [ MatInputModule, MatFormFieldModule, MatCheckboxModule, FormsModule, ReactiveFormsModule, MatSelectModule, DatePipe, ]
 })
 export class AppointmentDetailComponent implements OnInit {
 
