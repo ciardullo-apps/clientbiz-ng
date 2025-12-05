@@ -1,9 +1,11 @@
 <form [formGroup]="clientForm" (ngSubmit)="clientForm.valid && saveClient()">
     @if (client) {
         <div style="padding: 10px">
-            <mat-form-field *ngIf="client.id" class="client-full-width">
-                <input matInput placeholder="ID" formControlName="id" />
-            </mat-form-field>
+            @if (client.id) {
+                <mat-form-field class="client-full-width">
+                    <input matInput placeholder="ID" formControlName="id" />
+                </mat-form-field>
+            }
             <mat-form-field class="client-full-width">
                 <input id="firstName" matInput formControlName="firstname" placeholder="First name" required />
             </mat-form-field>

@@ -7,14 +7,13 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterLink } from '@angular/router';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
   standalone: true,
-  imports: [ MatDialogModule, MatToolbarModule, MatIconModule, MatMenuModule, RouterLink, NgIf, ]
+  imports: [ MatDialogModule, MatToolbarModule, MatIconModule, MatMenuModule, RouterLink ]
 })
 export class NavbarComponent implements OnInit {
 
@@ -66,7 +65,6 @@ export class NavbarComponent implements OnInit {
   templateUrl: './profile-dialog.html',
   styleUrls: ['./navbar.component.css'],
   standalone: true,
-  imports: [ NgIf, ]
 })
 export class ProfileDialogComponent {
   constructor(
