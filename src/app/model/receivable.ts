@@ -7,5 +7,5 @@ export class Receivable {
   duration: number;
   rate: number;
   billingpct: number;
-  paid: string
+  paid: Date | null
 }

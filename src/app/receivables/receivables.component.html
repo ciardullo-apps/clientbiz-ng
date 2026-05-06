@@ -4,6 +4,12 @@
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
+    <button mat-button color="primary" id="markpaid" (click)="onSubmit()">Mark Paid</button>
+    @if (isToast()) {
+    <span class="enter-container" animate.enter="enter-animation">
+        {{ submitMessage }}
+    </span>
+    }
     <mat-table [dataSource]="dataSource" matSort>
 
         <ng-container matColumnDef="appointment_id">
@@ -56,14 +62,20 @@
 
         <ng-container matColumnDef="amountdue">
             <mat-header-cell *matHeaderCellDef mat-sort-header>Amount Due</mat-header-cell>
-            <mat-cell *matCellDef="let receivable">{{ receivable.rate * (receivable.duration / 60) * receivable.billingpct | currency }}</mat-cell>
-            <mat-footer-cell id="totalOutstanding" *matFooterCellDef>{{ getTotalOutstanding() | currency }}</mat-footer-cell>
+            <mat-cell *matCellDef="let receivable">{{ receivable.rate * (receivable.duration / 60) *
+                receivable.billingpct | currency }}</mat-cell>
+            <mat-footer-cell id="totalOutstanding" *matFooterCellDef>{{ getTotalOutstanding() | currency
+                }}</mat-footer-cell>
         </ng-container>
 
         <ng-container matColumnDef="paid">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Paid</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header>
+                <mat-checkbox mat-button (change)="selectAll($event)" />
+            </mat-header-cell>
             <mat-cell *matCellDef="let receivable">
-                <button mat-button color="primary" id="markpaid_{{receivable.appointment_id}}" class="" (click)="onMarkPaid(receivable.appointment_id)">Mark Paid</button>
+                <mat-checkbox id="paid" class="client-full-width" labelPosition="before"
+                    (click)="togglePaid(receivable.appointment_id)" [checked]="receivable.paid !== null">
+                </mat-checkbox>
             </mat-cell>
             <mat-footer-cell *matFooterCellDef></mat-footer-cell>
         </ng-container>

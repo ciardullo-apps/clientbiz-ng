@@ -1,32 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { Receivable } from '../model/receivable';
 import { ClientService, UpdatePaidDateResponse } from '../services/client.service';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
-import { DateAdapter, provideNativeDateAdapter } from '@angular/material/core';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { concatMap, forkJoin, of, switchMap } from 'rxjs';
+import { MatAnchor } from "@angular/material/button";
 
 @Component({
   selector: 'app-receivables',
   templateUrl: './receivables.component.html',
   styleUrls: ['./receivables.component.css'],
   standalone: true,
-  imports: [ MatTableModule, MatDatepickerModule, MatFormFieldModule, MatInputModule,  ReactiveFormsModule, DatePipe, DecimalPipe, CurrencyPipe, ],
-  providers: [ provideNativeDateAdapter() ]
+  imports: [MatTableModule, MatDatepickerModule, MatFormFieldModule, MatInputModule, MatCheckboxModule, ReactiveFormsModule, DatePipe, DecimalPipe, CurrencyPipe, MatAnchor],
+  providers: [provideNativeDateAdapter()]
 })
 export class ReceivablesComponent implements OnInit {
 
-  receivables: Receivable[];
+  receivables: Receivable[] = []
   displayedColumns = ['appointment_id', 'firstname', 'lastname', 'topicname', 'starttime', 'duration', 'rate', 'billingpct', 'amountdue', 'paid'];
   dataSource: MatTableDataSource<Receivable>;
   paidDatePicker: FormControl;
+  isToast = signal(false)
+  submitMessage: string | null = null
 
   constructor(private clientService: ClientService,
-      private toastr: ToastrService) {
+    private toastr: ToastrService) {
     const todayAtMidnight = new Date();
     todayAtMidnight.setHours(0, 0, 0, 0);
     this.paidDatePicker = new FormControl(todayAtMidnight);
@@ -37,7 +42,7 @@ export class ReceivablesComponent implements OnInit {
 
   }
 
-  getReceivables() : void {
+  getReceivables(): void {
     this.clientService.getReceivables()
       .subscribe(receivables => {
         this.receivables = receivables;
@@ -45,9 +50,9 @@ export class ReceivablesComponent implements OnInit {
       });
   }
 
-  getTotalOutstanding() : number {
+  getTotalOutstanding(): number {
     let totalOutstanding = 0.0;
-    if(this.receivables) {
+    if (this.receivables) {
       totalOutstanding = this.receivables.map(r => (r.rate * (r.duration / 60) * r.billingpct))
         .reduce((acc, value) => acc + value, 0);
     }
@@ -55,15 +60,43 @@ export class ReceivablesComponent implements OnInit {
     return totalOutstanding;
   }
 
-  onMarkPaid(appointmentId : number) : void {
-    console.log(this.paidDatePicker.value);
+  togglePaid(appointmentId: number): void {
     const paidDate = this.paidDatePicker.value.toISOString().slice(0, 10);
-    console.log(paidDate);
-    this.clientService.markPaid(appointmentId, paidDate)
-      .subscribe((resp: UpdatePaidDateResponse) => {
-        console.log(resp);
-        this.toastr.success(`Appointment ID ${appointmentId} marked paid on ${paidDate}`);
-      });
+    const receivable = this.receivables.find(r => r.appointment_id === appointmentId);
+    if (receivable) {
+      receivable.paid = receivable.paid ? null : paidDate;
+    }
+  }
+
+  onSubmit(): void {
+    const paidReceivables = this.receivables.filter(r => r.paid);
+
+    if (paidReceivables.length === 0) {
+      // handle no items case if needed
+      return;
+    }
+
+    const requestsMap = paidReceivables.map(r => ({
+      receivable: r,
+      request: this.clientService.markPaid(r.appointment_id, r.paid)
+    }));
+
+    forkJoin(requestsMap.map(item => item.request)).subscribe({
+      next: (responses) => {
+        responses.forEach((resp, i) => {
+          const original = requestsMap[i].receivable;
+          console.log(`Updated ${original.appointment_id}:`, resp);
+        });
+
+        this.submitMessage = responses.map(r => r.updatedAppointmentId).join(', ').concat(' IDs marked paid')
+        this.isToast.update(isToast => !isToast);
+      }
+    });
+  }
+
+  selectAll(isChecked : any): void {
+    const paidDate = this.paidDatePicker.value.toISOString().slice(0, 10)
+    this.receivables.forEach(r => r.paid = isChecked.checked ? paidDate : null)
   }
 
 }

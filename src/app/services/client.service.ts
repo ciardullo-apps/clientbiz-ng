@@ -65,8 +65,7 @@ export class ClientService {
       })
   }
 
-  markPaid(appointmentId : number, paidDate: Date) : Observable<UpdatePaidDateResponse> {
-    console.log('Marking paid', appointmentId);
+  markPaid(appointmentId : number, paidDate: Date | null) : Observable<UpdatePaidDateResponse> {
     return this.http.post<UpdatePaidDateResponse>(`${environment.apiAddress}/updatePaidDate`,
     {
       id: (appointmentId),
