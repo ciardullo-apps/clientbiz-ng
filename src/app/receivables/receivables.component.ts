@@ -10,7 +10,7 @@ import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { concatMap, forkJoin, of, switchMap } from 'rxjs';
+import { BehaviorSubject, concatMap, forkJoin, of, switchMap } from 'rxjs';
 import { MatAnchor } from "@angular/material/button";
 
 @Component({
@@ -29,6 +29,8 @@ export class ReceivablesComponent implements OnInit {
   paidDatePicker: FormControl;
   isToast = signal(false)
   submitMessage: string | null = null
+  selected: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false)
+  selectedTotal: number = 0
 
   constructor(private clientService: ClientService,
     private toastr: ToastrService) {
@@ -38,8 +40,14 @@ export class ReceivablesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getReceivables();
-
+    this.getReceivables()
+    this.selected.subscribe(value => {
+      if (this.receivables.filter(r => r.paid).length > 0) {
+        this.selectedTotal = this.receivables.filter(r => r.paid).map(r => r.rate * (r.duration / 60) * r.billingpct).reduce((sum, value) => sum + value)
+      } else {
+        this.selectedTotal = 0
+      }
+    })
   }
 
   getReceivables(): void {
@@ -66,6 +74,7 @@ export class ReceivablesComponent implements OnInit {
     if (receivable) {
       receivable.paid = receivable.paid ? null : paidDate;
     }
+    this.selected.next(false)
   }
 
   onSubmit(): void {
@@ -94,9 +103,12 @@ export class ReceivablesComponent implements OnInit {
     });
   }
 
-  selectAll(isChecked : any): void {
+  selectAll(isChecked: any): void {
     const paidDate = this.paidDatePicker.value.toISOString().slice(0, 10)
-    this.receivables.forEach(r => r.paid = isChecked.checked ? paidDate : null)
+    this.receivables.forEach(r => {
+      r.paid = isChecked.checked ? paidDate : null
+      this.selected.next(true)
+    })
   }
 
 }

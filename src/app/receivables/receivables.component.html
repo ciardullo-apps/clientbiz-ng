@@ -77,7 +77,9 @@
                     (click)="togglePaid(receivable.appointment_id)" [checked]="receivable.paid !== null">
                 </mat-checkbox>
             </mat-cell>
-            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            <mat-footer-cell *matFooterCellDef>
+                {{ selectedTotal | currency }}
+            </mat-footer-cell>
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
